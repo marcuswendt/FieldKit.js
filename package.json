@@ -1,0 +1,30 @@
+{
+  "name": "fieldkit",
+  "version": "0.0.1",
+  "description": "Basic building blocks for computational design projects. Written in CoffeeScript for browser and server environments.",
+  "main": "lib/fieldkit.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/field/FieldKit.git"
+  },
+  "keywords": [
+    "computational",
+    "design",
+    "generative",
+    "geometry",
+    "physics",
+    "math"
+  ],
+  "author": "Marcus Wendt",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "bfdf7881ac3f1b25d0026d9caf80b8edb5a26c49",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "coffee-script": "~1.5.0"
+  }
+}
