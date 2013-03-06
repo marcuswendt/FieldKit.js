@@ -1,5 +1,8 @@
 # PATH := ./node_modules/.bin:${PATH}
 
+
+default: build
+	
 init:
 	npm install
 
