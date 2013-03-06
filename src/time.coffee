@@ -2,87 +2,112 @@
 
 # keeps track of time, measures intervals etc.
 class Timer
-    constructor: ->
-        @reset()
+  now: null
+  prev: null
 
-    update: ->
-        @now = Date.now()
-        dt = @now - @prev
-        @prev = @now
-        dt
+  constructor: ->
+    @reset()
 
-    elapsed: -> Date.now() - @prev
+  update: ->
+    @now = Date.now()
+    dt = @now - @prev
+    @prev = @now
+    dt
 
-    reset: -> @now = @prev = Date.now()
+  elapsed: -> Date.now() - @prev
+
+  reset: -> @now = @prev = Date.now()
 
 
 # keeps track of rhythm, converts between beats, bars, time, tempo etc
 class Tempo
-    # define the tempo using a pace in BPM and a time signature
-    constructor: (beatsPerMinute=120, @sigNum=4, @sigDenom=4) ->
-        @bpm = beatsPerMinute
+  bpm: 120
+  sigNum: 4
+  sigDenom: 4
 
-        # smallest unit in the temporal grid, how often to update in 1/n bars
-        @resolution = 32
-        
-        @reset()
+  # smallest unit in the temporal grid, how often to update in 1/n bars
+  resolution: 32
 
-    # when changing the tempo (bpm, signature) or resolution - reset needs to be called
-    reset: ->
-        # beats per millisecond
-        @beatInterval = 1000 / (@bpm / 60)
+  # internal
+  beatInterval: 0
+  gridInterval: 0
+  time: 0
+  prevEvent: 0
 
-        # user-specified grid units per millisecond
-        @gridInterval = @beatInterval * @sigNum / @resolution
+  # accessors - overriden by every update
+  beats: 0
+  beat: 0
+  bar: 0
 
-        # reset properties
-        @time = @prevEvent = 0
+  onBeat: false
+  onBar: false
+  on64: false
+  on32: false
+  on16: false
+  on8: false
+  on4: false
+  on2: false
 
-        # absolute number of beats so far
-        @beats = 0
+  # define the tempo using a pace in BPM and a time signature
+  constructor: (@bpm=120, @sigNum=4, @sigDenom=4) ->
+    @reset()
 
-        # current beat within a bar
-        @beat = @bar = 0
+  # when changing the tempo (bpm, signature) or resolution - reset needs to be called
+  reset: ->
+    # beats per millisecond
+    @beatInterval = 1000 / (@bpm / 60)
 
-        # booleans wether the current timestep is on that particular note
-        @onBeat = @onBar = false
-        @on64 = @on32 = @on16 = @on8 = @on4 = @on2 = false
-       
+    # user-specified grid units per millisecond
+    @gridInterval = @beatInterval * @sigNum / @resolution
 
-    # call update continously with time since last timestep
-    update: (dt) ->
-        @time += dt
+    # reset properties
+    @time = @prevEvent = 0
 
-        if @time - @prevEvent >= @gridInterval
-            @prevEvent = @time
+    # absolute number of beats so far
+    @beats = 0
 
-            gridUnits = Math.floor @time / @gridInterval
+    # current beat within a bar
+    @beat = @bar = 0
 
-            u = gridUnits
-            r = @resolution
+    # booleans wether the current timestep is on that particular note
+    @onBeat = @onBar = false
+    @on64 = @on32 = @on16 = @on8 = @on4 = @on2 = false
 
-            @beats = Math.floor @time / @beatInterval
-            @beat = @beats % @sigNum
 
-            @onBeat = u % (r / @sigNum) == 0
-            @onBar = u % 
+  # call update continously with time since last timestep
+  update: (dt) ->
+    @time += dt
 
-            @on64 = u % (r / 64) == 0
-            @on32 = u % (r / 32) == 0
-            @on16 = u % (r / 16) == 0
-            @on8 = u % (r / 8) == 0
-            @on4 = u % (r / 4) == 0
-            @on2 = u % (r / 2) == 0
+    if @time - @prevEvent >= @gridInterval
+      @prevEvent = @time
 
-            # console.log "time #{@time} beat #{@beat} / 32: #{@on32} 16: #{@on16} / 8: #{@on8}"
+      gridUnits = Math.floor @time / @gridInterval
 
-        else
-            @onBeat = @onBar = false
-            @on64 = @on32 = @on16 = @on8 = @on4 = @on2 = false
+      u = gridUnits
+      r = @resolution
 
-        @beat
+      @beats = Math.floor @time / @beatInterval
+      @beat = @beats % @sigNum
+
+      @onBeat = u % (r / @sigNum) == 0
+      @onBar = u %
+
+      @on64 = u % (r / 64) == 0
+      @on32 = u % (r / 32) == 0
+      @on16 = u % (r / 16) == 0
+      @on8 = u % (r / 8) == 0
+      @on4 = u % (r / 4) == 0
+      @on2 = u % (r / 2) == 0
+
+#      console.log "time #{@time} beat #{@beat} / 32: #{@on32} 16: #{@on16} / 8: #{@on8}"
+
+    else
+      @onBeat = @onBar = false
+      @on64 = @on32 = @on16 = @on8 = @on4 = @on2 = false
+
+    @beat
 
 
 module.exports =
-    Timer: Timer
-    Tempo: Tempo
+  Timer: Timer
+  Tempo: Tempo
