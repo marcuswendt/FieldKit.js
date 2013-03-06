@@ -1,5 +1,5 @@
 
-Basic building blocks for computational design projects. 
+Basic building blocks for computational design projects in JavaScript. 
 Written in CoffeeScript for browser and server environments.
 
 
@@ -15,6 +15,38 @@ also in browser-less e.g. installation and generative projects, it seemed like a
 
 Because of all this, please bear in mind that the codebase will change a lot for the next couple versions!
 
+
+Build
+=====
+
+Simply build with `$ make build` and use the library in your Node/ CommonJS project.
+
+
+Development
+===========
+
+Working with a library in development e.g. fieldkit.
+
+Set up NPM to store packages under user folder
+$ vi ~/.npmrc
+prefix = /Users/marcus/Documents/Development/npm
+
+Adjust PATH to find binaries installed with NPM
+$ vi ~/.profile
+export PATH=$PATH:/Users/marcus/Documents/Development/npm/bin/
+
+Clone library
+$ git clone git@github.com:field/FieldKit.git
+$ cd FieldKit
+
+Create NPM package link
+$ npm link 
+
+In Composer project dir - link library into project
+$ npm link fieldkit
+
+further reading on 
+http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears
 
 
 Credits
