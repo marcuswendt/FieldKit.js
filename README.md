@@ -19,7 +19,7 @@ Because of all this, please bear in mind that the codebase will change a lot for
 Build
 =====
 
-Simply build with `$ make build` and use the library in your Node/ CommonJS project.
+Simply build with ```$ make build``` and use the library in your Node/ CommonJS project.
 
 
 Development
@@ -28,22 +28,28 @@ Development
 Working with a library in development e.g. fieldkit.
 
 Set up NPM to store packages under user folder
+```
 $ vi ~/.npmrc
 prefix = /Users/marcus/Documents/Development/npm
+```
 
 Adjust PATH to find binaries installed with NPM
+```
 $ vi ~/.profile
 export PATH=$PATH:/Users/marcus/Documents/Development/npm/bin/
+```
 
 Clone library
+```
 $ git clone git@github.com:field/FieldKit.git
 $ cd FieldKit
+```
 
 Create NPM package link
-$ npm link 
+```$ npm link```
 
 In Composer project dir - link library into project
-$ npm link fieldkit
+```$ npm link fieldkit```
 
 further reading on 
 http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears
