@@ -27,6 +27,7 @@ class Tempo
         
         @reset()
 
+    # when changing the tempo (bpm, signature) or resolution - reset needs to be called
     reset: ->
         # beats per millisecond
         @beatInterval = 1000 / (@bpm / 60)
@@ -45,11 +46,10 @@ class Tempo
 
         # booleans wether the current timestep is on that particular note
         @onBeat = @onBar = false
-        @on32 = @on16 = @on8 = @on4 = @on2 = false
+        @on64 = @on32 = @on16 = @on8 = @on4 = @on2 = false
        
 
-
-    # call update continously
+    # call update continously with time since last timestep
     update: (dt) ->
         @time += dt
 
@@ -67,6 +67,7 @@ class Tempo
             @onBeat = u % (r / @sigNum) == 0
             @onBar = u % 
 
+            @on64 = u % (r / 64) == 0
             @on32 = u % (r / 32) == 0
             @on16 = u % (r / 16) == 0
             @on8 = u % (r / 8) == 0
@@ -77,7 +78,7 @@ class Tempo
 
         else
             @onBeat = @onBar = false
-            @on32 = @on16 = @on8 = @on4 = @on2 = false
+            @on64 = @on32 = @on16 = @on8 = @on4 = @on2 = false
 
         @beat
 
