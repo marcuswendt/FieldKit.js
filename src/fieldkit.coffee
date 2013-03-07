@@ -4,12 +4,15 @@
 
 color = require './color'
 time = require './time'
+random = require './random'
 
-module.exports = 
-    Color: color.Color
+module.exports =
+  Color: color.Color
 
-    Timer: time.Timer
-    Tempo: time.Tempo
+  Timer: time.Timer
+  Tempo: time.Tempo
 
-    # util: require './util'
-    # object: require './object'
+  RandomNumberGenerator: random.RandomNumberGenerator
+
+# util: require './util'
+# object: require './object'
