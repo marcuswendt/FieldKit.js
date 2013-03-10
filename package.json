@@ -1,9 +1,10 @@
 {
     "name": "fieldkit",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Basic building blocks for computational design projects. Written in CoffeeScript for browser and server environments.",
     "main": "lib/fieldkit.js",
     "scripts": {
+        "postinstall": "make dist",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
@@ -27,8 +28,5 @@
     },
     "devDependencies": {
         "coffee-script": "~1.5.0"
-    },
-    "scripts": {
-        "postinstall": "make dist"
     }
 }
