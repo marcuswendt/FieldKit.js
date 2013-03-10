@@ -81,7 +81,7 @@ class Vec2
   equals: (v) -> @x is v.x and @y is v.y
 
   clone: -> new Vec2(@x, @y)
-  toString: -> "Vec2[#{@x}, #{@y}]"
+  toString: -> "Vec2(#{@x}, #{@y})"
 
 
 #
@@ -172,7 +172,7 @@ class Vec3
   equals: (v) -> @x is v.x and @y is v.y and @z is v.z
 
   clone: -> new Vec3(@x, @y, @z)
-  toString: -> "Vec3[#{@x}, #{@y}, #{@z}]"
+  toString: -> "Vec3(#{@x}, #{@y}, #{@z})"
 
 
 module.exports =

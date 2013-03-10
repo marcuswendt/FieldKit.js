@@ -2,20 +2,32 @@
 # FieldKit
 # 
 
-color = require './color'
-time = require './time'
-random = require './random'
-vector = require './vector'
+util = require './util'
 
-module.exports =
-  Color: color.Color
 
-  Timer: time.Timer
-  Tempo: time.Tempo
+# Namespace
+fk = {}
 
-  RandomNumberGenerator: random.RandomNumberGenerator
+# Utility method to merge a files module exports into the main fk namespace
+merge = (file) ->
+  console.log "loading #{file}"
+  module = require file
+  fk = util.util.extend fk, module
 
-  Vec2: vector.Vec2
 
-# util: require './util'
-# object: require './object'
+#
+# Core Library
+#
+
+# Math
+merge './math/vector'
+merge './math/random'
+
+
+# Misc
+merge './color'
+merge './time'
+
+merge './util'
+
+module.exports = exports = fk
