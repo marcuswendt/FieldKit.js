@@ -1,25 +1,25 @@
 
 class Color
-    constructor: (@r=0, @g=0, @b=0, @a=256) ->
-        
-    set: (color) ->
-        @r = color.r
-        @g = color.g
-        @b = color.b
+  constructor: (@r=0, @g=0, @b=0, @a=256) ->
 
-    randomize: ->
-        @r = Math.floor(Math.random() * 256)
-        @g = Math.floor(Math.random() * 256)
-        @b = Math.floor(Math.random() * 256)
+  set: (color) ->
+    @r = color.r
+    @g = color.g
+    @b = color.b
 
-    clone: -> new Color(@r, @g, @b, @a)
+  randomize: ->
+    @r = Math.floor(Math.random() * 256)
+    @g = Math.floor(Math.random() * 256)
+    @b = Math.floor(Math.random() * 256)
 
-    equals: (other) -> 
-        return false if not other?
-        @r == other.r and @g == other.g and @b == other.b and @a == other.a
+  clone: -> new Color(@r, @g, @b, @a)
 
-    toString: ->
-        "fk.Color(#{@r},#{@g},#{@b},#{@a})"
+  equals: (other) ->
+    return false if not other?
+    @r == other.r and @g == other.g and @b == other.b and @a == other.a
 
-module.exports = 
-    Color: Color
+  toString: ->
+    "fk.Color(#{@r},#{@g},#{@b},#{@a})"
+
+module.exports =
+  Color: Color

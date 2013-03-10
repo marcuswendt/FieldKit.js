@@ -1,5 +1,4 @@
-# PATH := ./node_modules/.bin:${PATH}
-
+COFFEE = ./node_modules/.bin/coffee
 
 default: build
 	
@@ -13,13 +12,14 @@ clean:
 	rm -rf lib/
 
 build: clean
-	coffee -o lib/ -c src/ 
-	# && coffee -c test/fieldkit.coffee
+	${COFFEE} -o lib/ -c src/
 
 watch: clean
-	coffee -o lib/ -cw src/ 
+	${COFFEE} -o lib/ -cw src/
 
 dist: clean init docs build test
 
 publish: dist
 	npm publish
+
+# && coffee -c test/fieldkit.coffee
