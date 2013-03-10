@@ -5,6 +5,7 @@
 color = require './color'
 time = require './time'
 random = require './random'
+vector = require './vector'
 
 module.exports =
   Color: color.Color
@@ -13,6 +14,8 @@ module.exports =
   Tempo: time.Tempo
 
   RandomNumberGenerator: random.RandomNumberGenerator
+
+  Vec2: vector.Vec2
 
 # util: require './util'
 # object: require './object'
