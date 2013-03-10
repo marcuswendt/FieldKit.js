@@ -55,9 +55,21 @@ further reading on
 http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears
 
 
+TODO
+====
+
+[] standardize .toString results
+[] decide on package format (simulation, physics, maths packages?)
+[] templated example library
+[] look into automated documentation generators e.g literal coffeescript or doccu
+[] find automated test tool
+[] start writing automated test
+
+
 Credits
 =======
 
 Released under the BSD license.  Full details in the included LICENSE file.
 
 (c) 2013, Marcus Wendt <marcus@field.io>
+
