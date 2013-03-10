@@ -21,4 +21,4 @@ util.extend = (obj, source) ->
   obj
 
 
-module.exports.util = util
+module.exports = exports = util

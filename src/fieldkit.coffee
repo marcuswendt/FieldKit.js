@@ -1,18 +1,18 @@
 # 
-# FieldKit
+# FieldKit Index
 # 
-
 util = require './util'
 
-
 # Namespace
-fk = {}
+fk =
+  # Merges the given source file or module into the main fk namespace
+  module: (source) ->
+    module = if typeof source == 'string' then require source else source
+    util.extend this, module
 
-# Utility method to merge a files module exports into the main fk namespace
-merge = (file) ->
-  console.log "loading #{file}"
-  module = require file
-  fk = util.util.extend fk, module
+  # Stores the given module in a named subpackage
+  package: (name, module) ->
+    @[name] = module
 
 
 #
@@ -20,14 +20,13 @@ merge = (file) ->
 #
 
 # Math
-merge './math/vector'
-merge './math/random'
-
+fk.module './math/vector'
+fk.module './math/random'
 
 # Misc
-merge './color'
-merge './time'
+fk.module './color'
+fk.module './time'
 
-merge './util'
+fk.package 'util', util
 
 module.exports = exports = fk
