@@ -58,8 +58,9 @@ http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears
 TODO
 ====
 
+[] separate geo package
 [] standardize .toString results
-[] decide on package format (simulation, physics, maths packages?)
+[x] decide on package format (simulation, physics, maths packages?)
 [] templated example library
 [] look into automated documentation generators e.g literal coffeescript or doccu
 [] find automated test tool

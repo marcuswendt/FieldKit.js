@@ -1,8 +1,11 @@
-#
-# RandomNumberGenerator based on Jon Watte's mersenne twister package.
-# Adds several utility methods under a unified interface, that'll allow to use 
-# different number generators at some point.
-#
+###
+
+ RandomNumberGenerator based on Jon Watte's mersenne twister package.
+ Adds several utility methods under a unified interface, that'll allow to use
+ different number generators at some point.
+
+###
+
 mersenne = require 'mersenne'
 
 class RandomNumberGenerator
