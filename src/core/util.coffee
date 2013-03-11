@@ -21,4 +21,11 @@ util.extend = (obj, source) ->
   obj
 
 
+# removes the element from the given list (if it exists) and returns the list
+util.removeElement = (element, list) ->
+  index = list.indexOf element
+  list.splice index, 1 unless index is -1
+  list
+
+
 module.exports = util
