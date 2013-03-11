@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>01 Hello FieldKit</title>
+
+    <link type="text/css" href="assets/style.css">
+
+    <script type="text/javascript" src="assets/coffee-script.js"></script>
+    <script type="text/javascript" src="../build/fieldkit.js"></script>
+</head>
+<body>
+    <div id="container"></div>
+    <script type="text/coffeescript">
+        class Hello extends fk.client.Sketch
+            init: ->
+                console.log("init " + this)
+
+
+            draw: ->
+                this.clear()
+
+                this.fill(0)
+                this.rect(this.mouseX, this.mouseY, 5, 5)
+
+        new Hello()
+    </script>
+</body>
+</html>

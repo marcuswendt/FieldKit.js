@@ -46,5 +46,8 @@ extend 'util', util
 # client/browser specific libraries
 extend 'client', require './client/sketch'
 
-
 module.exports = fk
+
+global.fk = fk
+
+

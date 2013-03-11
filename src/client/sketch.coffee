@@ -35,8 +35,8 @@ class Sketch
 
   start: ->
     # set up draw loop
-    render = ->
-      self.draw()
+    render = =>
+      @draw()
       window.requestAnimationFrame render
 
     window.requestAnimationFrame render
