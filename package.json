@@ -27,7 +27,7 @@
         "mersenne": "0.0.3"
     },
     "devDependencies": {
-        "coffee-script": "~1.5.0",
+        "coffee-script": "~1.6.1",
         "browserify": "~2.4.3",
         "coffeeify": "0.0.0",
         "uglify-js": "~2.2.0"
