@@ -37,6 +37,8 @@ class Vec2
       @y /= l
     this
 
+  normalize_: -> @clone().normalize()
+
   normalizeTo: (length) ->
     magnitude = Math.sqrt(@x * @x + @y * @y)
     if magnitude > 0
@@ -44,6 +46,8 @@ class Vec2
       @x *= magnitude
       @y *= magnitude
     this
+
+  normalizeTo_: (length) -> @clone().normalizeTo_(length)
 
   distance: (v) -> Math.sqrt @distanceSquared2(v.x, v.y)
   distanceSquared: (v) -> @distanceSquared2 v.x, v.y
@@ -125,6 +129,8 @@ class Vec3
       @z /= l
     this
 
+  normalize_: -> @clone().normalize()
+
   normalizeTo: (length) ->
     magnitude = Math.sqrt(@x * @x + @y * @y + @z * @z)
     if magnitude > 0
@@ -132,6 +138,8 @@ class Vec3
       @x *= magnitude
       @y *= magnitude
     this
+
+  normalizeTo_: (length) -> @clone().normalizeTo_(length)
 
   distance: (v) -> Math.sqrt @distanceSquared3(v.x, v.y, v.z)
   distanceSquared: (v) -> @distanceSquared3 v.x, v.y, v.z
