@@ -22,6 +22,7 @@ class Force extends Behaviour
   apply: (particle) -> particle.position.add force
 
 
+
 ###
 
   Attracts each particle within range to a target point.

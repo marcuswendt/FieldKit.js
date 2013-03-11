@@ -71,7 +71,48 @@ class Wrap2 extends Constraint
       prev.y -= delta.y
 
 
+###
+  Keeps a particle within a certain 2D region by wrapping it around a given area.
+###
+class Wrap3 extends Constraint
+  delta = new Vec3()
+
+  constructor: (@min = new Vec3(), @max = new Vec3(100, 100, 100)) ->
+
+  prepare: -> delta.set(@max).sub(@min)
+
+  apply: (particle) ->
+    pos = particle.position
+    prev = particle.prev
+
+    if pos.x < @min.x
+      pos.x += delta.x
+      prev.x += delta.x
+
+    if pos.y < @min.y
+      pos.y += delta.y
+      prev.y += delta.y
+
+    if pos.z < @min.z
+      pos.z += delta.z
+      prev.z += delta.z
+
+    if pos.x > @max.x
+      pos.x -= delta.x
+      prev.x -= delta.x
+
+    if pos.y > @max.y
+      pos.y -= delta.y
+      prev.y -= delta.y
+
+    if pos.z > @max.z
+      pos.z -= delta.z
+      prev.z -= delta.z
+
+
 module.exports =
   Box: Box
   Area: Area
   Wrap2: Wrap2
+  Wrap3: Wrap3
+
