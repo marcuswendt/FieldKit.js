@@ -1,24 +1,36 @@
-COFFEE = ./node_modules/.bin/coffee
+# Variables
+BIN = ./node_modules/.bin
+COFFEE = ${BIN}/coffee
+BROWSERIFY = ${BIN}/browserify
+UGLIFY = ${BIN}/uglifyjs
 
-default: build
-	
-docs:
-	# docco src/*.coffee
+
+# Targets
+default: dist
 
 clean:
 	rm -rf lib/
+	rm -rf build/
 
+# compile the NPM library version to JavaScript
 build: clean
 	${COFFEE} -o lib/ -c src/
 
 watch: clean
 	${COFFEE} -o lib/ -cw src/
 
-dist: clean docs build test
+# compiles the NPM version files into a combined minified web .js library
+web: build
+	mkdir build/
+	${BROWSERIFY} lib/fieldkit.js > build/fieldkit.js
+	${UGLIFY} build/fieldkit.js > build/fieldkit.min.js
+
+docs:
+	# docco src/*.coffee
+
+test:
+
+dist: web
 
 publish: dist
 	npm publish
-
-
-# && coffee -c test/fieldkit.coffee
-# ${COFFEE} -o lib/ -j lib/fieldkit.js src/
