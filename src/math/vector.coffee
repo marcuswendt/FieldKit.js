@@ -5,7 +5,7 @@ class Vec2
   x: 0
   y: 0
 
-  constructor: (@x, @y) ->
+  constructor: (@x=0, @y=0) ->
 
   set: (v) -> @x = v.x; @y = v.y; this
   set2: (x, y) -> @x = x; @y = y; this
@@ -92,7 +92,7 @@ class Vec3
   y: 0
   z: 0
 
-  constructor: (@x, @y, @z) ->
+  constructor: (@x=0, @y=0, @z=0) ->
 
   set: (v) -> @x = v.x; @y = v.y; @z = v.z; this
   set3: (x, y, z) -> @x = x; @y = y; @z = z; this
