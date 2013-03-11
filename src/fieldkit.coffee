@@ -8,31 +8,41 @@
 
 ###
 
-util = require './util'
+util = require './core/util'
+
+extend = ->
+  switch arguments.length
+    when 1
+      util.extend fk, arguments[0]
+
+    when 2
+      pkg = arguments[0]
+      fk[pkg] = {} if not fk[pkg]?
+      util.extend fk[pkg], arguments[1]
+
 
 # Namespace
-fk =
-  # Merges the given source file or module into the main fk namespace
-  module: (module) ->
-    util.extend this, module
-
-  # Stores the given module in a named subpackage
-  package: (name, module) ->
-    @[name] = module
+fk = {}
 
 
 #
 # Core Library
 #
+extend require './core/color'
+extend require './core/time'
 
 # Math
-fk.module require './math/vector'
-fk.module require './math/random'
+extend require './core/math/random'
+extend require './core/math/vector'
 
-# Misc
-fk.module require './color'
-fk.module require './time'
+# Utilities
+extend 'util', util
 
-fk.package 'util', util
+
+#
+# Independent Sub Libraries
+#
+extend 'physics', require './physics/physics.coffee'
+
 
 module.exports = fk

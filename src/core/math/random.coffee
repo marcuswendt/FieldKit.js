@@ -1,6 +1,6 @@
 ###
 
- RandomNumberGenerator based on Jon Watte's mersenne twister package.
+ Random based on Jon Watte's mersenne twister package.
  Adds several utility methods under a unified interface, that'll allow to use
  different number generators at some point.
 
@@ -8,7 +8,7 @@
 
 mersenne = require 'mersenne'
 
-class RandomNumberGenerator
+class Random
   constructor: (initialSeed=0) ->
     @seed(initialSeed)
 
@@ -17,7 +17,7 @@ class RandomNumberGenerator
     mersenne.seed @seedValue
 
   toString: ->
-    "RandomNumberGenerator(#{@seedValue})"
+    "Random(#{@seedValue})"
 
 
   # ~~~ Numbers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,4 +67,4 @@ class RandomNumberGenerator
 
 
 module.exports =
-  RandomNumberGenerator: RandomNumberGenerator
+  Random: Random
