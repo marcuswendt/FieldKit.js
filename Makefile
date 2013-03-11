@@ -2,9 +2,6 @@ COFFEE = ./node_modules/.bin/coffee
 
 default: build
 	
-init:
-	npm install
-
 docs:
 	# docco src/*.coffee
 
@@ -17,9 +14,11 @@ build: clean
 watch: clean
 	${COFFEE} -o lib/ -cw src/
 
-dist: clean init docs build test
+dist: clean docs build test
 
 publish: dist
 	npm publish
 
+
 # && coffee -c test/fieldkit.coffee
+# ${COFFEE} -o lib/ -j lib/fieldkit.js src/
