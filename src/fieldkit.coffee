@@ -13,8 +13,7 @@ util = require './util'
 # Namespace
 fk =
   # Merges the given source file or module into the main fk namespace
-  module: (source) ->
-    module = if typeof source == 'string' then require source else source
+  module: (module) ->
     util.extend this, module
 
   # Stores the given module in a named subpackage
@@ -27,13 +26,13 @@ fk =
 #
 
 # Math
-fk.module './math/vector'
-fk.module './math/random'
+fk.module require './math/vector'
+fk.module require './math/random'
 
 # Misc
-fk.module './color'
-fk.module './time'
+fk.module require './color'
+fk.module require './time'
 
 fk.package 'util', util
 
-module.exports = exports = fk
+module.exports = fk
