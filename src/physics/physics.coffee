@@ -58,12 +58,16 @@ class Physics
       p = particles[i]
       p.update()
       dead.push p if p.state is stateDead
+      undefined
 
     # remove dead particles
     i = dead.length
     while i--
       p = dead[i]
       util.removeElement p, particles
+      undefined
+
+    undefined
 
 
   # --- utilities ---
@@ -71,20 +75,18 @@ class Physics
   # applies all effectors to the given particle list when their states match
   applyEffectors: (effectors, particles) ->
     state = effectors.length
-    while state--
-      stateEffectors = effectors[state]
-
+    for state in effectors
       # apply all behaviours for this state if particle is in this state
-      j = stateEffectors.length
-      while j--
-        e = stateEffectors[j]
-        e.prepare this
+      for effector in effectors[state]
+        effector.prepare this
 
-        i = particles.length
-        while i--
-          particle = particles[i]
-          e.apply particle if particle.state is state
+        for particle in particles
+          effector.apply particle if particle.state is state
+          undefined
 
+        undefined
+      undefined
+    undefined
 
   # returns the number of particles
   size: -> @particles.length
