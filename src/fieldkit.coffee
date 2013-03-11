@@ -42,10 +42,19 @@ extend 'util', util
 #
 # Independent Sub Libraries
 #
+extend 'physics', require './physics/physics'
+extend 'physics', require './physics/particle'
+extend 'physics', require './physics/behaviours'
+extend 'physics', require './physics/constraints'
+
 
 # client/browser specific libraries
 extend 'client', require './client/sketch'
 
+
+#
+# Exports
+#
 module.exports = fk
 
 global.fk = fk
