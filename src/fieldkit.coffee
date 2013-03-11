@@ -42,7 +42,9 @@ extend 'util', util
 #
 # Independent Sub Libraries
 #
-extend 'physics', require './physics/physics.coffee'
+
+# client/browser specific libraries
+extend 'client', require './client/sketch'
 
 
 module.exports = fk
