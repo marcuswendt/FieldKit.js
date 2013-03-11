@@ -18,17 +18,24 @@
             # use 2D particles
             @physics.emitter.type = fk.physics.Particle2
 
+            @physics.emitter.max = 1000
+
             # randomize birth position
             @physics.emitter.init = (particle) =>
                 particle.setPosition2 Math.random() * @width, Math.random() * @height
 
-            # creates a force that pulls particles up
-            @physics.add new fk.physics.Force new fk.Vec2(0, -0.01)
+            # creates a force that slowly pulls particles up
+            @physics.add new fk.physics.Force new fk.Vec2(0, -1), 0.025
 
+            # makes sure our particles never leave the canvas
             @physics.add new fk.physics.Wrap2 new fk.Vec2(), new fk.Vec2(@width, @height)
+
+            @attractor = new fk.physics.Attractor new fk.Vec2(), 150, 0.5
+            @physics.add @attractor
 
 
         draw: ->
+            @attractor.target.set2 @mouseX, @mouseY
             @physics.update()
 
             # draw

@@ -25,7 +25,7 @@ class Box extends Constraint
 
 
 ###
-  2D version of Box
+  2D version of Box.
 ###
 class Area extends Constraint
   constructor: (@min = new Vec2(), @max = new Vec2(100, 100)) ->
@@ -40,6 +40,9 @@ class Area extends Constraint
     pos.y = @max.y if pos.y > @max.y
 
 
+###
+  Keeps a particle within a certain 2D region by wrapping it around a given area.
+###
 class Wrap2 extends Constraint
   delta = new Vec2()
 
