@@ -23,6 +23,8 @@ class Box extends Constraint
     pos.y = @max.y if pos.y > @max.y
     pos.z = @max.z if pos.z > @max.z
 
+  toString: -> "Box(#{@min}, #{@max})"
+
 
 ###
   2D version of Box.
@@ -38,6 +40,8 @@ class Area extends Constraint
 
     pos.x = @max.x if pos.x > @max.x
     pos.y = @max.y if pos.y > @max.y
+
+  toString: -> "Area(#{@min}, #{@max})"
 
 
 ###
@@ -69,6 +73,8 @@ class Wrap2 extends Constraint
     if pos.y > @max.y
       pos.y -= delta.y
       prev.y -= delta.y
+
+  toString: -> "Wrap2(#{@min}, #{@max})"
 
 
 ###
@@ -108,6 +114,8 @@ class Wrap3 extends Constraint
     if pos.z > @max.z
       pos.z -= delta.z
       prev.z -= delta.z
+
+  toString: -> "Wrap3(#{@min}, #{@max})"
 
 
 module.exports =

@@ -21,6 +21,7 @@ class Force extends Behaviour
 
   apply: (particle) -> particle.position.add force
 
+  toString: -> "Force(#{force})"
 
 
 ###
@@ -48,6 +49,7 @@ class Attractor
       tmp.scale (1 / dist) * (1 - dist / @range) * @weight
       particle.force.add tmp
 
+  toString: -> "Attractor(#{@target}, #{@range}, #{@weight})"
 
 module.exports =
   Force: Force
