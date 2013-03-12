@@ -18,14 +18,20 @@ News
 
 The library is starting to take shape now, among other things these are the main features so far:
 
-[x] building versions for web and backends
+[x] Building versions for web and backends.
 
-[x] installation via NPM
+[x] Installation via NPM.
 
-[x] integrated a 2D + 3D physics simulation library.
+[x] Physics: integrated a 2D + 3D physics simulation library.
 	The main intention here is not to run X million particles
 	but to have a library of effectors that can be combined and sequenced easily to create 'intelligent' behaviour
 	and/ or to use it as building block for other simulations e.g. Ragdoll physics.
+
+[x] Geometry: 2D + 3D vector math classes.
+
+[x] Geometry: Lines, Splines.
+
+[x] Time: A musical Tempo clock and Timer classes.
 
 
 03/03/2013
@@ -53,8 +59,9 @@ Install with ```$ npm install fieldkit``` and use the library in your Node/ Comm
 Build
 -----
 
-Clone the git repository ```$ git clone https://github.com/field/FieldKit.js.git```
-and build the web + npm variants by running ```$ make``` in the project directory.
+* Clone the git repository ```$ git clone https://github.com/field/FieldKit.js.git```.
+* Install the dependent NPM libraries ```npm install```.
+* Build the web + npm variants by running ```$ make``` in the project directory.
 
 
 
