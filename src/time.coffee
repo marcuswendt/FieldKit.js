@@ -91,6 +91,7 @@ class Tempo
 
       @onBeat = u % (r / @sigNum) == 0
       @onBar = (u % @sigDenom) == 0
+      @bar += 1 if @onBar
 
       @on64 = u % (r / 64) == 0
       @on32 = u % (r / 32) == 0

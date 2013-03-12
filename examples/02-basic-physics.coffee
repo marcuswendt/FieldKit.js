@@ -1,4 +1,6 @@
 class Example extends fk.client.Sketch
+  Vec2 = fk.math.Vec2
+
   setup: ->
 #    console.log "w #{@width} h #{@height}"
 
@@ -14,12 +16,12 @@ class Example extends fk.client.Sketch
       particle.setPosition2 Math.random() * @width, Math.random() * @height
 
     # creates a force that slowly pulls particles up
-    @physics.add new fk.physics.Force new fk.Vec2(0, -1), 0.025
+    @physics.add new fk.physics.Force new Vec2(0, -1), 0.025
 
     # makes sure our particles never leave the canvas
-    @physics.add new fk.physics.Wrap2 new fk.Vec2(), new fk.Vec2(@width, @height)
+    @physics.add new fk.physics.Wrap2 new Vec2(), new Vec2(@width, @height)
 
-    @attractor = new fk.physics.Attractor new fk.Vec2(), 150, 0.5
+    @attractor = new fk.physics.Attractor new Vec2(), 150, 0.5
     @physics.add @attractor
 
 

@@ -1,4 +1,4 @@
-vector = require '../core/math/vector'
+vector = require '../math/vector'
 Vec2 = vector.Vec2
 Vec3 = vector.Vec3
 

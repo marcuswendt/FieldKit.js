@@ -8,7 +8,7 @@
 
 ###
 
-util = require './core/util'
+util = require './util'
 
 extend = ->
   switch arguments.length
@@ -28,12 +28,13 @@ fk = {}
 #
 # Core Library
 #
-extend require './core/color'
-extend require './core/time'
+extend require './color'
+extend require './time'
 
 # Math
-extend require './core/math/random'
-extend require './core/math/vector'
+extend 'math', require './math/math'
+extend 'math', require './math/random'
+extend 'math', require './math/vector'
 
 # Utilities
 extend 'util', util

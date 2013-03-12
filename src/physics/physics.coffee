@@ -1,4 +1,4 @@
-util = require '../core/util'
+util = require '../util'
 particleModule = require './particle'
 Particle = particleModule.Particle
 
