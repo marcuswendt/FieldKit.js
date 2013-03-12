@@ -53,18 +53,16 @@ class Physics
     dead = []
     stateDead = particleModule.State.Dead
 
-    i = particles.length
-    while i--
-      p = particles[i]
-      p.update()
-      dead.push p if p.state is stateDead
+    for particle in particles
+      particle.update()
+      dead.push particle if particle.state is stateDead
       undefined
 
     # remove dead particles
     i = dead.length
     while i--
-      p = dead[i]
-      util.removeElement p, particles
+      particle = dead[i]
+      util.removeElement particle, particles
       undefined
 
     undefined
@@ -74,10 +72,13 @@ class Physics
 
   # applies all effectors to the given particle list when their states match
   applyEffectors: (effectors, particles) ->
+    # go through all states in effectors list
     state = effectors.length
-    for state in effectors
+    while state--
+      stateEffectors = effectors[state]
+
       # apply all behaviours for this state if particle is in this state
-      for effector in effectors[state]
+      for effector in stateEffectors
         effector.prepare this
 
         for particle in particles
