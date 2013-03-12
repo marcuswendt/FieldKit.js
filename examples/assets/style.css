@@ -43,12 +43,13 @@ body {
     color: #E8E8E8;
     background-color: #1a1a1a;
     font-family: 'Roboto', sans-serif;
+    overflow: hidden;
 }
 
 header {
     color: #000;
     background-color: #FFF;
-    padding: 1em;
+    /*padding: 1em;*/
 }
 
 h1 {
@@ -68,6 +69,9 @@ select {
     background-color: #16f096;
 }
 
+textarea {
+    background-color: white;
+}
 /*
     ------------------------------------------------------------------------------------------------------------------
 */
@@ -75,7 +79,9 @@ select {
 
 }
 header {
-
+    height: 5%;
+    padding-top: 1em;
+    padding-left: 1em;
 }
 
 #nav {
@@ -86,20 +92,25 @@ header {
 
 body, html { height:100%; }
 
+#content {
+    width: 100%;
+    height: 95%;
+}
+
 #container {
-    background-color: #1a1a1a;
     width: 100%;
     height: 100%;
+    background-color: #1a1a1a;
 }
 
 #code {
     position: absolute;
-    top: 5em;
-    left: 2em;
+    top: 5%;
+    left: 0em;
     width: 50%;
+    height: 95%;
 
-    color: #FFFFFF;
-    background-color: #333333;
     border-radius: 5px;
     padding: 1em;
+    background-color: #e5e5e5;
 }

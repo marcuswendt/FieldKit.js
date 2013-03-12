@@ -3,28 +3,39 @@
 <head>
     <title>FieldKit.js / Examples</title>
 
-    <link rel="stylesheet" type="text/css" href="assets/style.css">
+    <link href="assets/style.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
-    <script type="text/javascript" src="../build/fieldkit.js"></script>
     <script type="text/javascript" src="assets/coffee-script.js"></script>
     <script type="text/javascript" src="assets/jquery-1.9.1.js"></script>
+
+    <!-- code mirror editor -->
+    <link href="assets/codemirror/codemirror.css" rel="stylesheet" type="text/css">
+    <link href="assets/codemirror/eclipse.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="assets/codemirror/codemirror.js"></script>
+    <script type="text/javascript" src="assets/codemirror/coffeescript.js"></script>
+
+
+    <!-- fieldkit -->
+    <script type="text/javascript" src="../build/fieldkit.js"></script>
     <script type="text/coffeescript" src="assets/ui.coffee"></script>
 </head>
 <body>
   <header>
-    <h1 id="title">FieldKit</h1>
+      <h1 id="title">FieldKit</h1>
 
-    <div id="nav">
-        <select id="menu"></select>
-        <a id="showCode">show code</a>
-    </div>
+      <div id="nav">
+          <select id="menu"></select>
+          <a id="showCode">show code</a>
+      </div>
   </header>
 
-  <div id="container">
-  </div>
+  <div id="content">
+      <div id="container">
+      </div>
 
-  <div id="code">
+      <div id="code">
+      </div>
   </div>
 </body>
 </html>

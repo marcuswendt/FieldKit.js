@@ -34,7 +34,7 @@ class Sketch
     @start()
 
     # setup event listeners
-    document.onmousemove = (e) =>
+    domObject.onmousemove = (e) =>
       @mouseX = e.x
       @mouseY = e.y
 

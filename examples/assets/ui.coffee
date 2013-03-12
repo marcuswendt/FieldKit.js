@@ -5,6 +5,7 @@ $(document).ready ->
 
   historyState = {}
   currentExample = null
+  currentEditor = null
 
   loadExample = (title, url) ->
     console.log "loading example '#{title}' (#{url})"
@@ -18,14 +19,20 @@ $(document).ready ->
     $("#container").html "<p><i>loading...</i></p>"
 
     $("#code").hide()
-    $("#code").text ""
+#    $("#code").text ""
 
     # load script
     $.get url, (data) ->
 
       # update page
       $("#container").html ""
-      $("#code").html "<pre>#{data}</pre>"
+
+      currentEditor = CodeMirror document.getElementById("code"), {
+        value: data
+        mode: "coffeescript"
+        theme: "eclipse"
+        runable: true
+      }
 
       # compile CoffeeScript to JavaScript
       source = data + "\n" + "window.currentExample = new Example()"
@@ -38,14 +45,23 @@ $(document).ready ->
       slug = url.replace ".coffee", ""
       window.history.pushState { title: title, url: url }, title, "##{slug}"
 
-  $('#showCode').click -> $("#code").fadeToggle()
+  #
+  # Events
+  #
+  $('#showCode').click ->
+    $("#code").fadeToggle(120)
+    if currentEditor?
+      currentEditor.setSize($('#code').width(), $('#code').height())
 
   # handle history back/forward changes
   $(window).bind 'popstate', (e) ->
     state = e.originalEvent.state
     loadExample state.title, state.url if state?
 
-  # initialise menu
+
+  #
+  # Menu
+  #
   $.getJSON '../index.json', (data) ->
     menu = $('#menu')
 
