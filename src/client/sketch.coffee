@@ -38,20 +38,20 @@ class Sketch
       @mouseX = e.x
       @mouseY = e.y
 
-  isRunning = false
+  isRunning: false
 
   start: ->
-    isRunning = true
+    @isRunning = true
 
     # set up draw loop
     render = =>
       @draw()
-      if(isRunning)
+      if(@isRunning)
         window.requestAnimationFrame render
 
     window.requestAnimationFrame render
 
-  stop: -> isRunning = false
+  stop: -> @isRunning = false
 
   toString: -> "Sketch"
 
