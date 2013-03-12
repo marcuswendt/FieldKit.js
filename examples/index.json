@@ -1,0 +1,13 @@
+{
+    "examples": [
+        {
+            "title": "01 Hello FieldKit",
+            "url": "01-hello-fieldkit.coffee"
+        },
+
+        {
+            "title": "02 Basic Physics",
+            "url": "02-basic-physics.coffee"
+        }
+    ]
+}

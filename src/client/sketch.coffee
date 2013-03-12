@@ -4,8 +4,8 @@
 
 ####
 class Sketch
-  width: 640
-  height: 480
+  width: -1
+  height: -1
   domObjectId: "container"
 
   # drawing
@@ -18,6 +18,11 @@ class Sketch
   constructor: (options) ->
     # initialise drawing context
     domObject = document.getElementById(@domObjectId)
+
+    @width = domObject.offsetWidth if @width == -1
+    @height = domObject.offsetHeight if @height == -1
+
+    # create 2D canvas
     canvas = document.createElement("canvas")
     canvas.width = @width
     canvas.height = @height
@@ -33,13 +38,20 @@ class Sketch
       @mouseX = e.x
       @mouseY = e.y
 
+  isRunning = false
+
   start: ->
+    isRunning = true
+
     # set up draw loop
     render = =>
       @draw()
-      window.requestAnimationFrame render
+      if(isRunning)
+        window.requestAnimationFrame render
 
     window.requestAnimationFrame render
+
+  stop: -> isRunning = false
 
   toString: -> "Sketch"
 
