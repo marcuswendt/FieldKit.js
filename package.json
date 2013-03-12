@@ -30,6 +30,7 @@
         "coffee-script": "~1.6.1",
         "browserify": "~2.4.3",
         "coffeeify": "0.0.0",
-        "uglify-js": "~2.2.0"
+        "uglify-js": "~2.2.0",
+        "node-static": "~0.6.7"
     }
 }
