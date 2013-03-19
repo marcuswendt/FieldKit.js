@@ -8,6 +8,9 @@ UGLIFY = ${BIN}/uglifyjs
 # Targets
 default: dist
 
+deps: 
+	npm install
+	
 clean:
 	rm -rf lib/
 	rm -rf build/
@@ -30,7 +33,7 @@ docs:
 
 test:
 
-dist: web
+dist: deps web
 
 publish: dist
 	npm publish
