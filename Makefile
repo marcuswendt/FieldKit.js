@@ -9,7 +9,7 @@ UGLIFY = ${BIN}/uglifyjs
 default: dist
 
 deps: 
-	npm install
+	if test -d "node_modules"; then echo "dependencies installed"; else npm install; fi
 	
 clean:
 	rm -rf lib/
