@@ -8,6 +8,11 @@
         {
             "title": "02 Basic Physics",
             "url": "02-basic-physics.coffee"
+        },
+
+        {
+            "title": "03 Timed Echos",
+            "url": "03-timed-echo.coffee"
         }
     ]
 }
