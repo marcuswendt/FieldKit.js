@@ -71,10 +71,16 @@ class Sketch
 
   computeStyle = (args) ->
     switch args.length
-      # Grey
+      # Fillstyle / Grey
       when 1
-        grey = args[0]
-        "rgba(#{grey}, #{grey}, #{grey}, 1)"
+        arg = args[0]
+        # argument is a fillstyle
+        if typeof arg == "string"
+          arg
+
+        # argument is a greyscale value 0-255
+        else
+          "rgba(#{arg}, #{arg}, #{arg}, 1)"
 
       # Grey + Alpha
       when 2
@@ -91,6 +97,8 @@ class Sketch
 
       else
         "#FF0000"
+
+  color: -> computeStyle(arguments)
 
   # multiple arguments: see computeStyle
   background: ->
