@@ -31,7 +31,7 @@ class Physics
   addParticle: (particle) -> @particles.push particle
 
   # Add a behaviour or constraint to the simulation
-  add: (effector, state=particleModule.State.Alive) ->
+  add: (effector, state=particleModule.State.ALIVE) ->
     list = if effector instanceof Constraint then @constraints else @behaviours
 
     list[state] = []  unless list[state]
@@ -51,7 +51,7 @@ class Physics
 
     # update all particles
     dead = []
-    stateDead = particleModule.State.Dead
+    stateDead = particleModule.State.DEAD
 
     for particle in particles
       particle.update()

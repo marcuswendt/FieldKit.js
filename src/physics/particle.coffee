@@ -4,10 +4,10 @@ Vec3 = vector.Vec3
 
 # States of the particle
 State =
-  Alive: 0
-  Locked: 1
-  Idle: 2
-  Dead: 3
+  ALIVE: 0
+  LOCKED: 1
+  IDLE: 2
+  DEAD: 3
 
 
 ###
@@ -21,8 +21,9 @@ State =
 ###
 class Particle
   id: 0
-  state: State.Alive
+  state: State.ALIVE
   age: 0
+  lifetime: -1
 
   position: null
   drag: 0.03
@@ -43,10 +44,10 @@ class Particle
     @position.set v
     @prev.set v
 
-  lock: -> @state = State.Locked
-  unlock: -> @state = State.Alive
-  die: -> @state = State.Dead
-  idle: -> @state = State.Idle
+  lock: -> @state = State.LOCKED
+  unlock: -> @state = State.ALIVE
+  die: -> @state = State.DEAD
+  idle: -> @state = State.IDLE
 
   toString: -> "Particle(#{@position})"
 
@@ -69,7 +70,9 @@ class Particle3 extends Particle
 
   update: ->
     @age++
-    return if @state > State.Alive
+    return if @state > State.ALIVE
+
+    @state = State.DEAD if @lifetime > 0 and @age == @lifetime
 
     # integrate velocity
     tmp.set @position
@@ -102,7 +105,9 @@ class Particle2 extends Particle
 
   update: ->
     @age++
-    return if @state > State.Alive
+    return if @state > State.ALIVE
+
+    @state = State.DEAD if @lifetime > 0 and @age == @lifetime
 
     # integrate velocity
     tmp.set @position
