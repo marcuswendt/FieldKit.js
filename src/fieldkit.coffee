@@ -58,6 +58,5 @@ extend 'client', require './client/sketch'
 #
 module.exports = fk
 
-global.fk = fk
-
-
+# attach to global window object in browser based environments
+window.fk = fk if window?

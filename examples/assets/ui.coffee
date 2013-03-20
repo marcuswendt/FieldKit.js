@@ -62,7 +62,7 @@ $(document).ready ->
   #
   # Menu
   #
-  $.getJSON '../index.json', (data) ->
+  $.getJSON './index.json', (data) ->
     menu = $('#menu')
 
     for example in data.examples

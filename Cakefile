@@ -36,20 +36,13 @@ task 'examples', 'start static server for examples', ->
   console.log "Launching example file server on localhost:#{port}"
 
   staticServer = require 'node-static'
-  fileServer = new(staticServer.Server)('./examples', { cache: 0 })
+  fileServer = new(staticServer.Server)('./', { cache: 0 })
 
   server = require('http').createServer (request, response) ->
     request.addListener 'end', ->
         fileServer.serve request, response, (e, res) ->
-          
-          # handle build files separately
-          if request.url == buildFile
-            fileServer.serveFile "../#{buildFile}", 302, {}, request, response
-
-            # util = require 'util'
-            # console.log "--------------------------------------------------------------"
-            # console.log util.inspect e
-            # console.log util.inspect res
-            # console.log util.inspect request
+          if request.url == '/'
+            response.writeHead 302, { 'Location': 'examples/' }
+            response.end()
 
   server.listen port
