@@ -28,7 +28,7 @@ class Tempo
   # smallest unit in the temporal grid, how often to update in 1/n bars
   resolution: 32
 
-  # internal
+  # internal - all times in milliseconds
   beatInterval: 0
   gridInterval: 0
   time: 0
@@ -49,7 +49,7 @@ class Tempo
   on2: false
 
   # define the tempo using a pace in BPM and a time signature
-  constructor: (@bpm=120, @sigNum=4, @sigDenom=4) ->
+  constructor: (@bpm=120, @sigNum=4, @sigDenom=4, @resolution=32) ->
     @reset()
 
   # when changing the tempo (bpm, signature) or resolution - reset needs to be called
@@ -74,12 +74,19 @@ class Tempo
     @on64 = @on32 = @on16 = @on8 = @on4 = @on2 = false
 
 
-  # call update continously with time since last timestep
+  # call update continously with time in milliseconds since last timestep
   update: (dt) ->
-    @time += dt
+    forceOnGrid = @time - @prevEvent >= @gridInterval
+    @setTime @time + dt, forceOnGrid
+    @beat
 
-    if @time - @prevEvent >= @gridInterval
-      @prevEvent = @time
+  # sets the internal clock to an absolute time in seconds
+  setTime: (time, forceOnGrid) ->
+    @time = time
+
+    # time is on grid
+    if @time % @gridInterval == 0 or forceOnGrid
+      @prevEvent = time
 
       gridUnits = Math.floor @time / @gridInterval
 
@@ -100,8 +107,7 @@ class Tempo
       @on4 = u % (r / 4) == 0
       @on2 = u % (r / 2) == 0
 
-#      console.log "time #{@time} beat #{@beat} / 32: #{@on32} 16: #{@on16} / 8: #{@on8}"
-
+    # time is not on grid
     else
       @onBeat = @onBar = false
       @on64 = @on32 = @on16 = @on8 = @on4 = @on2 = false

@@ -6,11 +6,13 @@ class Color
     @r = color.r
     @g = color.g
     @b = color.b
+    this
 
   randomize: ->
     @r = Math.floor(Math.random() * 256)
     @g = Math.floor(Math.random() * 256)
     @b = Math.floor(Math.random() * 256)
+    this
 
   clone: -> new Color(@r, @g, @b, @a)
 
