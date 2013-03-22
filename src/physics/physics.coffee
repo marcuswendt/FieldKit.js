@@ -12,6 +12,9 @@ class Physics
   # List of all particles in the simulation
   particles: []
 
+  # List of all spring constraints in the simulation
+  springs: []
+
   # List of all behaviours
   behaviours: []
   constraints: []
@@ -28,10 +31,34 @@ class Physics
     @constraints = []
     @emitter = new Emitter(this)
 
+  # polymorphic add
+  add: ->
+    return if arguments.length == 0
+    arg = arguments[0]
+
+    if arg instanceof Particle
+      @addParticle arg
+
+    else if arg instanceof Behaviour
+      console.log "adding behaviour #{arg}"
+      state = arguments[1] if arguments.length > 1
+      @addBehaviour arg, state
+
+    else if arg instanceof Spring
+      console.log "adding spring #{arg}"
+      @addSpring arg
+
+    else
+      "Cannot add #{arg}"
+
+    arg
+
   addParticle: (particle) -> @particles.push particle
 
+  addSpring: (spring) -> @springs.push spring
+
   # Add a behaviour or constraint to the simulation
-  add: (effector, state=particleModule.State.ALIVE) ->
+  addBehaviour: (effector, state=particleModule.State.ALIVE) ->
     list = if effector instanceof Constraint then @constraints else @behaviours
 
     list[state] = []  unless list[state]
@@ -65,6 +92,10 @@ class Physics
       util.removeElement particle, particles
       undefined
 
+    # update springs
+    for spring in @springs
+      spring.update()
+
     undefined
 
 
@@ -91,6 +122,7 @@ class Physics
 
   # returns the number of particles
   size: -> @particles.length
+
 
 
 ###
@@ -143,9 +175,37 @@ class Behaviour
   apply: (particle) ->
 
 
-class Constraint
+class Constraint extends Behaviour
   prepare: ->
   apply: (particle) ->
+
+
+
+###
+  Verlet Spring
+###
+class Spring
+  a: null # first particle
+  b: null # second particle
+  restLength: 0
+  strength: 1
+
+  constructor: (@a, @b) ->
+    @restLength = @a.position.distance @b.position
+
+  update: ->
+    delta = @b.position.sub_ @a.position
+    dist = delta.length()
+
+    normDistStrength = (dist - @restLength) / (dist * @strength) * 0.5
+
+    if not @a.isLocked
+      @a.position.add delta.scale_ normDistStrength
+
+    if not @b.isLocked
+      @b.position.add delta.scale_ -normDistStrength
+
+  toString: -> "Spring(#{a}, #{b})"
 
 
 module.exports =
@@ -153,4 +213,5 @@ module.exports =
   Emitter: Emitter
   Behaviour: Behaviour
   Constraint: Constraint
+  Spring: Spring
 
