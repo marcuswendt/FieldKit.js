@@ -13,6 +13,11 @@
         {
             "title": "03 Timed Echos",
             "url": "03-timed-echo.coffee"
+        },
+
+        {
+            "title": "04 Soft Bodies",
+            "url": "04-soft-bodies.coffee"
         }
     ]
 }

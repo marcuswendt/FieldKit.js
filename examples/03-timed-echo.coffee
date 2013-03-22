@@ -38,7 +38,7 @@ class Example extends fk.client.Sketch
     @physics.add new fk.physics.Wrap2 new Vec2(), new Vec2(@width, @height)
 
     @attractor = new fk.physics.Attractor new Vec2(), 150, 0.5
-#    @physics.add @attractor
+    @physics.add @attractor
 
     # -- Graphics --
     cMouse = @color 255, 0, 255
@@ -51,7 +51,7 @@ class Example extends fk.client.Sketch
 
     #    console.log "bar: #{@tempo.bars} beat: #{@tempo.beats}"
 
-    if @tempo.onBar and @tempo.bars % 5 == 0
+    if @tempo.onBar
       console.log "beep"
       @physics.emitter.rate = 250
     else
@@ -65,12 +65,12 @@ class Example extends fk.client.Sketch
     # draw
     @background(0)
 
-#    @fill(255)
+    @fill(255)
     for particle in @physics.particles
       if particle.state == State.ALIVE
         life = 1 - (particle.age / particle.lifetime)
-        @fill 255, life
+#        @fill 255, life
         @rect particle.position.x, particle.position.y, particle.size, particle.size
 
     @fill cMouse
-    @rect this.mouseX, this.mouseY, 5, 5
+    @circle this.mouseX, this.mouseY, 7
