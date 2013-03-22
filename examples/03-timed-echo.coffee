@@ -49,9 +49,9 @@ class Example extends fk.client.Sketch
     dt = @timer.update()
     beat = @tempo.update dt
 
-    #    console.log "bar: #{@tempo.bar} beat: #{@tempo.beat}"
+    #    console.log "bar: #{@tempo.bars} beat: #{@tempo.beats}"
 
-    if @tempo.onBar and @tempo.bar % 5 == 0
+    if @tempo.onBar and @tempo.bars % 5 == 0
       console.log "beep"
       @physics.emitter.rate = 250
     else

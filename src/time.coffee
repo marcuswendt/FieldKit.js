@@ -36,8 +36,9 @@ class Tempo
 
   # accessors - overriden by every update
   beats: 0
+  bars: 0
+
   beat: 0
-  bar: 0
 
   onBeat: false
   onBar: false
@@ -67,7 +68,7 @@ class Tempo
     @beats = 0
 
     # current beat within a bar
-    @beat = @bar = 0
+    @beat = @bars = 0
 
     # booleans wether the current timestep is on that particular note
     @onBeat = @onBar = false
@@ -94,11 +95,12 @@ class Tempo
       r = @resolution
 
       @beats = Math.floor @time / @beatInterval
+      @bars = Math.floor @beats / @sigDenom
+
       @beat = @beats % @sigNum
 
       @onBeat = u % (r / @sigNum) == 0
-      @onBar = (u % @sigDenom) == 0
-      @bar += 1 if @onBar
+      @onBar = (u % (@sigNum * @sigDenom)) == 0
 
       @on64 = u % (r / 64) == 0
       @on32 = u % (r / 32) == 0
