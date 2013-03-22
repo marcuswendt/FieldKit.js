@@ -100,7 +100,7 @@ class Tempo
       @beat = @beats % @sigNum
 
       @onBeat = u % (r / @sigNum) == 0
-      @onBar = (u % (@sigNum * @sigDenom)) == 0
+      @onBar = (u % @resolution) == 0
 
       @on64 = u % (r / 64) == 0
       @on32 = u % (r / 32) == 0
