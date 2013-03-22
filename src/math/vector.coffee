@@ -68,8 +68,8 @@ class Vec2
     @y = ry
 
   jitter: (amount) ->
-    @x += Math.random.float(-1, 1) * amount
-    @y += Math.random.float(-1, 1) * amount
+    @x += (Math.random() * 2 - 1) * amount
+    @y += (Math.random() * 2 - 1) * amount
     this
 
   jitter_: (amount) -> (new Vec2(@x, @y)).jitter amount
@@ -161,9 +161,9 @@ class Vec3
 #    @y = ry
 
   jitter: (amount) ->
-    @x += Math.random.float(-1, 1) * amount
-    @y += Math.random.float(-1, 1) * amount
-    @z += Math.random.float(-1, 1) * amount
+    @x += (Math.random() * 2 - 1) * amount
+    @y += (Math.random() * 2 - 1) * amount
+    @z += (Math.random() * 2 - 1) * amount
     this
 
   jitter_: (amount) -> (new Vec3(@x, @y, @z)).jitter amount
