@@ -1,6 +1,10 @@
+###
 
+
+
+###
 class Color
-  constructor: (@r=0, @g=0, @b=0, @a=256) ->
+  constructor: (@r=0, @g=0, @b=0, @a=1) ->
 
   set: (color) ->
     @r = color.r
@@ -9,9 +13,9 @@ class Color
     this
 
   randomize: ->
-    @r = Math.floor(Math.random() * 256)
-    @g = Math.floor(Math.random() * 256)
-    @b = Math.floor(Math.random() * 256)
+    @r = Math.random()
+    @g = Math.random()
+    @b = Math.random()
     this
 
   clone: -> new Color(@r, @g, @b, @a)
