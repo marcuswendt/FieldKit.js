@@ -91,7 +91,10 @@ class Sketch
 
         # assumes object is a fk.Color
         else if arg instanceof Color
-          "rgba(#{arg.r * 255}, #{arg.g * 255}, #{arg.b * 255}, #{arg.a})"
+          r = Math.floor(arg.r * 255)
+          g = Math.floor(arg.g * 255)
+          b = Math.floor(arg.b * 255)
+          "rgba(#{r}, #{g}, #{b}, #{arg.a})"
 
         # argument is a greyscale value 0-255
         else
