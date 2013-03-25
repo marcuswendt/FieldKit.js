@@ -31,6 +31,7 @@ class Physics
   constructor: ->
     @space = new Space()
     @emitter = new Emitter(this)
+    @springIterations = 1
     @clear()
 
   clear: ->
@@ -122,7 +123,8 @@ class Physics
         effector.prepare this
 
         for particle in particles
-          effector.apply particle if particle.state is state
+          if particle.state is state and not particle.isLocked
+            effector.apply particle
           undefined
 
         undefined

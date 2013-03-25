@@ -25,6 +25,11 @@ class Particle
   age: 0
   lifetime: -1
 
+  size: 1
+
+  # Spring
+  isLocked: false
+
   position: null
   drag: 0.03
 
