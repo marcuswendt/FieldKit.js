@@ -22,16 +22,21 @@ class Physics
   # The particle emitter
   emitter: null
 
+  # The spatial optimisation manager to use
+  space: null
+
+  # Settings
   springIterations: 1
 
   constructor: ->
+    @space = new Space()
+    @emitter = new Emitter(this)
     @clear()
 
   clear: ->
     @particles = []
     @behaviours = []
     @constraints = []
-    @emitter = new Emitter(this)
 
   # polymorphic add
   add: ->
@@ -69,6 +74,8 @@ class Physics
 
   update: ->
     @emitter.update()
+
+    @space.update(this)
 
     particles = @particles
 
@@ -126,11 +133,32 @@ class Physics
   size: -> @particles.length
 
 
+###
+  Spatial Search
+
+  Simple brute force spatial searches.
+  Subclasses may override this to organise particles so they can be found quicker later
+###
+class Space
+  physics = null
+
+  constructor: ->
+
+  update: (physics_) -> physics = physics_
+
+  search: (center, radius) ->
+    result = []
+    radiusSq = radius * radius
+
+    for particle in physics.particles
+      if center.distanceSquared(particle.position) < radiusSq
+        result.push particle
+
+    result
+
 
 ###
-
   Particle Emitter
-
 ###
 class Emitter
   rate: 1
@@ -199,6 +227,8 @@ class Spring
     delta = @b.position.sub_ @a.position
     dist = delta.length()
 
+    return if dist == 0
+
     normDistStrength = (dist - @restLength) / (dist * @strength) * 0.5
 
     if not @a.isLocked
@@ -213,6 +243,7 @@ class Spring
 module.exports =
   Physics: Physics
   Emitter: Emitter
+  Space: Space
   Behaviour: Behaviour
   Constraint: Constraint
   Spring: Spring
