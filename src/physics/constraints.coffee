@@ -124,7 +124,7 @@ class Wrap3 extends Constraint
 class Collision extends Constraint
   physics: null
   searchRadius: 100
-  bouncyness: 1
+#  bouncyness: 1
 
   constructor: (@physics) ->
 
@@ -150,7 +150,7 @@ class Collision extends Constraint
 
       if distSq < radiusSq
         dist = Math.sqrt distSq
-        delta.scale (dist - radius)/ radius * 0.5 * @bouncyness
+        delta.scale (dist - radius)/ radius * 0.5
 
         particle.position.sub delta
         neighbour.position.add delta
