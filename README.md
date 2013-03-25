@@ -17,6 +17,7 @@ v.0.1.0 - 25/03/2013
 --------------------
 
 ![Example 05](examples/screenshots/05-force-directed-graph.png "Example 05: A Force Directed Graph")
+
 Finished all core parts of the physics simulation package.
 Apart from a few rough edges its already fairly usable as you can see in examples 04 + 05.
 
