@@ -35,6 +35,7 @@ extend require './time'
 extend 'math', require './math/math'
 extend 'math', require './math/random'
 extend 'math', require './math/vector'
+extend 'math', require './math/rect'
 
 # Utilities
 extend 'util', util
