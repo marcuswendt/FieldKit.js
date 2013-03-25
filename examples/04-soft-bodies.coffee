@@ -8,102 +8,105 @@ class Example extends fk.client.Sketch
   State = fk.physics.State
 
   rng = new fk.math.Random()
-
   cMouse = new fk.Color(1,1,0)
 
-  numSprings = 32
-
   setup: ->
-#    console.log "w #{@width} h #{@height}"
-
-    @timer = new fk.Timer()
-    @tempo = new fk.Tempo()
-
-    # -- Physics --
     @physics = new fk.physics.Physics()
-    @physics.springIterations = numSprings / 2
+    @physics.constraintIterations = 1
+    @physics.springIterations = 16 # should be equals the maximum number of springs connected to a single object
 
     # use 2D particles
     @physics.emitter.type = fk.physics.Particle2
-
     @physics.emitter.rate = 0
-    @physics.emitter.max = 1000
-
-
-    @a = @physics.emitter.create()
-    @a.color = new fk.Color 1,0,0
-    @a.size = 5
-    @a.setPosition2 @width/2, @height * 1 / 4
-
-    for i in [0..numSprings]
-      b = @physics.emitter.create()
-      b.color = new fk.Color 1,1,0
-      b.size = 10
-
-      pos = @a.position.jitter_ @width * 0.25
-      b.setPosition pos
-
-      @physics.addSpring new fk.physics.Spring @a, b
-
-    # randomize birth position
-#    @physics.emitter.init = (particle) =>
-#      particle.setPosition2 @width / 2, ((Math.random() * 2 - 1) * 0.25 + 0.5) * @height
-#      particle.force.set2 (Math.random() * 2 - 1) * 10.1, 0
-#
-#      particle.lifetime = rng.int 60, 120
-#      particle.size = 5
-
-    #      particle.setPosition2 Math.random() * @width, Math.random() * @height
 
     # Gravity
-    @physics.addBehaviour new fk.physics.Force new Vec2(0, 1), 0.01
+    @physics.add new fk.physics.Force new Vec2(0, 1), 0.65
 
     # makes sure our particles never leave the canvas
-#    @physics.addBehaviour new fk.physics.Wrap2 new Vec2(), new Vec2(@width, @height)
+    @physics.add new fk.physics.Area new Vec2(), new Vec2(@width, @height-100)
 
-    a = @a
-    class CustomAttractor extends fk.physics.Attractor
-      tmp = a.position.clone()
-      rangeSq = 0
+#    @physics.add new fk.physics.Collision(@physics)
 
-      isEnabled: false
+#    a = @a
+#    class CustomAttractor extends fk.physics.Attractor
+#      tmp = a.position.clone()
+#      rangeSq = 0
+#
+#      isEnabled: false
+#
+#      prepare: -> rangeSq = @range * @range
+#
+#      apply: (particle) ->
+#        if @isEnabled and particle == a
+#          tmp.set(@target).sub particle.position
+#          distSq = tmp.lengthSquared()
+#          if distSq > 0 and distSq < rangeSq
+#
+#            # normalize and inverse proportional weight
+#            dist = Math.sqrt(distSq)
+##            tmp.scale (1 / dist) * (1 - dist / @range) * @weight
+#            tmp.normalize().scale @weight
+#            particle.force.add tmp
+#
+#    @attractor = new CustomAttractor new Vec2(), 150, 1.0
+#    @physics.addBehaviour @attractor
 
-      prepare: -> rangeSq = @range * @range
+    @makeCreature @width / 2, @height / 2
 
-      apply: (particle) ->
-        if @isEnabled and particle == a
-          tmp.set(@target).sub particle.position
-          distSq = tmp.lengthSquared()
-          if distSq > 0 and distSq < rangeSq
+  makeCreature: (x, y) ->
 
-            # normalize and inverse proportional weight
-            dist = Math.sqrt(distSq)
-#            tmp.scale (1 / dist) * (1 - dist / @range) * @weight
-            tmp.normalize().scale @weight
-            particle.force.add tmp
+    sizeMin = 100
+    sizeMax = 150
 
-    @attractor = new CustomAttractor new Vec2(), 150, 1.0
-    @physics.addBehaviour @attractor
+    center = particle = @physics.emitter.create()
+    particle.setPosition2 x, y
+
+    nPoints = fk.math.randI 8, 64
+    hull = []
+    alpha = 0
+    for i in [0..nPoints]
+        alpha += Math.PI * 2 / nPoints
+
+        jitter = sizeMin + Math.random() * (sizeMax - sizeMin)
+
+        particle = @physics.emitter.create()
+
+        particle.position.set center.position
+        particle.position.x += Math.sin(alpha) * jitter
+        particle.position.y += Math.cos(alpha) * jitter
+        particle.clearVelocity()
+
+        particle.size = 3
+
+        hull.push particle
+
+    createLink = (a, b, strength) =>
+      spring = @physics.addSpring new fk.physics.Spring a, b, strength
+      spring
+
+    # create exterior springs
+    for particle, i in hull
+      prev = if i == 0 then hull[ hull.length - 1] else hull[ i-1 ]
+      spring = createLink particle, prev, 0.3
+      spring.color = new fk.Color(1,1,0)
+
+    # create interior support springs
+    for particle, i in hull
+      if fk.math.randF(0,1) > 0.25
+        spring = createLink particle, center, 0.5
+        spring.color = new fk.Color(0,1,1)
+
 
   mouseDown: ->
-    @attractor.isEnabled = true
+    @makeCreature @mouseX, @mouseY
+#    @attractor.isEnabled = true
 
   mouseUp: ->
-    @attractor.isEnabled = false
+#    @attractor.isEnabled = false
 
   draw: ->
-    dt = @timer.update()
-#    beat = @tempo.update dt
 #
-#    #    console.log "bar: #{@tempo.bars} beat: #{@tempo.beats}"
-#
-#    if @tempo.onBar and @tempo.bars % 5 == 0
-#      console.log "beep"
-#      @physics.emitter.rate = 250
-#    else
-#      @physics.emitter.rate = 0
-#
-    @attractor.target.set2 @mouseX, @mouseY
+#    @attractor.target.set2 @mouseX, @mouseY
 
     # update physics
     @physics.update()
@@ -113,21 +116,19 @@ class Example extends fk.client.Sketch
 
     # draw springs
     @noFill()
-    @stroke 255
     @lineWidth 2
+    @stroke 255
     for spring in @physics.springs
+      @stroke spring.color
       @line spring.a.position, spring.b.position
 
     # draw particles
     @noStroke()
     for particle in @physics.particles
-      if particle.state == State.ALIVE
-#        life = 1 - (particle.age / particle.lifetime)
-#        @fill 255, life
-        @fill particle.color
-        @circle particle.position.x, particle.position.y, particle.size
+      @fill 255
+      @circle particle.position.x, particle.position.y, particle.size
 
     # draw mouse
-    if @attractor.isEnabled
-      @fill 0, 255, 0
-      @circle this.mouseX, this.mouseY, 7
+#    if @attractor.isEnabled
+#      @fill 0, 255, 0
+#      @circle this.mouseX, this.mouseY, 7

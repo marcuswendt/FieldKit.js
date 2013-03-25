@@ -43,7 +43,7 @@ class GNode
     for child in @children
       radius = weight * 0.5 + @particle.size * 4
       child.init graph, @particle.position, radius, @particle.size
-      graph.addLink @particle, child.particle
+      spring = graph.addLink @particle, child.particle
 
 
 class Graph
@@ -111,7 +111,7 @@ class Example extends fk.client.Sketch
 
   # Settings
   maxDepth = 3
-  springIterations = 32
+  springIterations = maxDepth * 16
   warmupIterations = 16
 
   setup: ->
@@ -139,15 +139,10 @@ class Example extends fk.client.Sketch
     # find min / max
     @graph.centerGraph center
 
-  mouseDown: ->
-#    @attractor.isEnabled = true
+    console.log "created graph with #{@graph.root.getWeight()} nodes"
 
-  mouseUp: ->
-#    @attractor.isEnabled = false
 
   draw: ->
-#    @attractor.target.set2 @mouseX, @mouseY
-
     # update
     @graph.update()
 
@@ -155,6 +150,14 @@ class Example extends fk.client.Sketch
     physics = @graph.physics
     @background(0)
 
+    # draw bounds
+    r = @graph.getBounds()
+    @noFill()
+    @stroke(64)
+    @rect r.x1, r.y1, r.width(), r.height()
+
+    @fill(64)
+    @rect r.center().x, r.center().y, 6, 6
 
     # draw springs
     @noFill()
@@ -174,15 +177,4 @@ class Example extends fk.client.Sketch
         else
           @noStroke()
           @fill 255
-
-        @circle particle.position.x, particle.position.y, particle.size
-
-
-    # draw bounds
-#    r = @graph.getBounds()
-#    @noFill()
-#    @stroke(255)
-#    @rect r.x1, r.y1, r.width(), r.height()
-#
-#    @fill(255)
-#    @rect r.center().x, r.center().y, 6, 6
+        @circle particle.position.x, particle.position.y, particle.size * 0.8
