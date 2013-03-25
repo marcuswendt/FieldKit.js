@@ -22,6 +22,8 @@ class Physics
   # The particle emitter
   emitter: null
 
+  springIterations: 1
+
   constructor: ->
     @clear()
 
@@ -76,6 +78,11 @@ class Physics
     # apply constraints
     @applyEffectors @constraints, particles
 
+    # update springs
+    for i in [0..@springIterations]
+      for spring in @springs
+        spring.update()
+
     # update all particles
     dead = []
     stateDead = particleModule.State.DEAD
@@ -91,11 +98,6 @@ class Physics
       particle = dead[i]
       util.removeElement particle, particles
       undefined
-
-    # update springs
-    for spring in @springs
-      spring.update()
-
     undefined
 
 

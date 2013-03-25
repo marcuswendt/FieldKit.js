@@ -1,7 +1,7 @@
 {
     "examples": [
         {
-            "title": "01 Hello FieldKit",
+            "title": "01 Hello FieldKit (TODO)",
             "url": "01-hello-fieldkit.coffee"
         },
 
@@ -16,8 +16,13 @@
         },
 
         {
-            "title": "04 Soft Bodies",
+            "title": "04 Soft Bodies (TODO)",
             "url": "04-soft-bodies.coffee"
+        },
+
+        {
+            "title": "05 Force Directed Graph",
+            "url": "05-force-directed-graph.coffee"
         }
     ]
 }

@@ -11,6 +11,8 @@ class Example extends fk.client.Sketch
 
   cMouse = new fk.Color(1,1,0)
 
+  numSprings = 32
+
   setup: ->
 #    console.log "w #{@width} h #{@height}"
 
@@ -19,6 +21,7 @@ class Example extends fk.client.Sketch
 
     # -- Physics --
     @physics = new fk.physics.Physics()
+    @physics.springIterations = numSprings / 2
 
     # use 2D particles
     @physics.emitter.type = fk.physics.Particle2
@@ -32,7 +35,7 @@ class Example extends fk.client.Sketch
     @a.size = 5
     @a.setPosition2 @width/2, @height * 1 / 4
 
-    for i in [0..5]
+    for i in [0..numSprings]
       b = @physics.emitter.create()
       b.color = new fk.Color 1,1,0
       b.size = 10
@@ -53,7 +56,7 @@ class Example extends fk.client.Sketch
     #      particle.setPosition2 Math.random() * @width, Math.random() * @height
 
     # Gravity
-#    @physics.addBehaviour new fk.physics.Force new Vec2(0, 1), 0.01
+    @physics.addBehaviour new fk.physics.Force new Vec2(0, 1), 0.01
 
     # makes sure our particles never leave the canvas
 #    @physics.addBehaviour new fk.physics.Wrap2 new Vec2(), new Vec2(@width, @height)
