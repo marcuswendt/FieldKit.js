@@ -152,6 +152,9 @@ class Collision extends Constraint
         dist = Math.sqrt distSq
         delta.scale (dist - radius)/ radius * 0.5
 
+        # slightly faster method
+        # delta.scale (distSq - radiusSq)/ radiusSq * 0.25
+
         particle.position.sub delta
         neighbour.position.add delta
       undefined

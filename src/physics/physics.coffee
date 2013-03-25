@@ -26,12 +26,12 @@ class Physics
   space: null
 
   # Settings
+  constraintIterations: 1
   springIterations: 1
 
   constructor: ->
     @space = new Space()
     @emitter = new Emitter(this)
-    @springIterations = 1
     @clear()
 
   clear: ->
@@ -61,9 +61,13 @@ class Physics
 
     arg
 
-  addParticle: (particle) -> @particles.push particle
+  addParticle: (particle) ->
+    @particles.push particle
+    particle
 
-  addSpring: (spring) -> @springs.push spring
+  addSpring: (spring) ->
+    @springs.push spring
+    spring
 
   # Add a behaviour or constraint to the simulation
   addBehaviour: (effector, state=particleModule.State.ALIVE) ->
@@ -84,12 +88,13 @@ class Physics
     @applyEffectors @behaviours, particles
 
     # apply constraints
-    @applyEffectors @constraints, particles
+    for j in [0..@constraintIterations]
+      @applyEffectors @constraints, particles
 
-    # update springs
-    for i in [0..@springIterations]
-      for spring in @springs
-        spring.update()
+      for i in [0..@springIterations]
+        # update springs
+        for spring in @springs
+          spring.update()
 
     # update all particles
     dead = []
@@ -220,24 +225,27 @@ class Spring
   a: null # first particle
   b: null # second particle
   restLength: 0
-  strength: 1
+  strength: 0.5
 
-  constructor: (@a, @b) ->
+  constructor: (@a, @b, @strength = 0.5) ->
     @restLength = @a.position.distance @b.position
 
   update: ->
     delta = @b.position.sub_ @a.position
-    dist = delta.length()
+    dist = delta.length() + Number.MIN_VALUE
 
-    return if dist == 0
+    normDistStrength = (dist - @restLength) / dist * @strength
 
-    normDistStrength = (dist - @restLength) / (dist * @strength) * 0.5
+    return if normDistStrength == 0
+
+    delta.scale normDistStrength
 
     if not @a.isLocked
-      @a.position.add delta.scale_ normDistStrength
+#      @a.position.add delta.scale_ normDistStrength
+      @a.position.add delta
 
     if not @b.isLocked
-      @b.position.add delta.scale_ -normDistStrength
+      @b.position.sub delta
 
   toString: -> "Spring(#{a}, #{b})"
 
