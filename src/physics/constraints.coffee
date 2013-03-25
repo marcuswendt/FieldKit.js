@@ -118,9 +118,51 @@ class Wrap3 extends Constraint
   toString: -> "Wrap3(#{@min}, #{@max})"
 
 
+###
+  Stops particles from colliding with each other.
+###
+class Collision extends Constraint
+  physics: null
+  searchRadius: 100
+  bouncyness: 1
+
+  constructor: (@physics) ->
+
+  apply: (particle) ->
+    position = particle.position
+    delta = position.clone()
+
+    neighbours = @physics.space.search position, @searchRadius
+
+#    if particle.id == 0
+#      console.log "found #{neighbours.length} particles"
+
+    for neighbour in neighbours
+      continue if neighbour == particle
+
+      # vector from particle to neighbour
+      delta.set(position).sub neighbour.position
+
+      distSq = delta.lengthSquared()
+
+      radius = particle.size + neighbour.size
+      radiusSq = radius * radius
+
+      if distSq < radiusSq
+        dist = Math.sqrt distSq
+        delta.scale (dist - radius)/ radius * 0.5 * @bouncyness
+
+        particle.position.sub delta
+        neighbour.position.add delta
+      undefined
+    undefined
+
+
+
 module.exports =
   Box: Box
   Area: Area
   Wrap2: Wrap2
   Wrap3: Wrap3
+  Collision: Collision
 
