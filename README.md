@@ -13,6 +13,14 @@ Written in CoffeeScript for browser and server environments.
 News
 ====
 
+v.0.1.0 - 25/03/2013 
+--------------------
+
+![Example 05](examples/screenshots/05-force-directed-graph.png "Example 05: A Force Directed Graph")
+Finished all core parts of the physics simulation package.
+Apart from a few rough edges its already fairly usable as you can see in examples 04 + 05.
+
+
 12/03/2013
 ----------
 
@@ -63,6 +71,11 @@ Build
 * Install the dependent NPM libraries ```npm install```.
 * Build the web + npm variants by running ```$ make``` in the project directory.
 
+
+Examples
+========
+
+Having coffee-script installed somewhere on your path, you can start the example file webserver with ```cake examples```. 
 
 
 Development
