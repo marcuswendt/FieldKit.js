@@ -7,12 +7,11 @@ class Example extends fk.client.Sketch
 
   setup: ->
     rng = new fk.math.Random()
-    @noise = new fk.math.Noise(rng)
+    @noise = new fk.math.SimplexNoise(rng)
     @image = @renderNoiseTexture @width, @height
 
   draw: ->
     @background(0)
-
     @drawImage @image, 0, 0
 
   renderNoiseTexture: (width, height) ->
@@ -24,11 +23,9 @@ class Example extends fk.client.Sketch
         xn = x / width * freq
         yn = y / height * freq
 
-        n = @noise.noise2 xn, yn
-#        n = (xn + yn) % 1
-        n *= 256
-        image.setPixel x, y, n, n, n
+        value = @noise.noise3(xn, yn, (xn + yn) * 5)
+        n = value * 256
 
-#        image.setPixel x, y, 255, 0, 0, 255
+        image.setPixel x, y, n, n, n
 
     image
