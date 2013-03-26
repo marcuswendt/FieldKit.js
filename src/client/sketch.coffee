@@ -174,5 +174,20 @@ class Sketch
     @g.stroke()
     @g.closePath()
 
+  createImage: (width, height) ->
+    imageData = @g.createImageData(width, height)
+
+    imageData.setPixel = (x, y, r, g, b, a = 255) ->
+      index = (x + y * @width) * 4
+
+      @data[index + 0] = r
+      @data[index + 1] = g
+      @data[index + 2] = b
+      @data[index + 3] = a
+
+    imageData
+
+  drawImage: (imageData, x, y) -> @g.putImageData(imageData, x, y)
+
 module.exports =
   Sketch: Sketch
