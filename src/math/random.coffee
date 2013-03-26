@@ -21,21 +21,23 @@ class Random
 
 
   # ~~~ Numbers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  next: ->
+  random: ->
     k = 1000000
     mersenne.rand(k) / k
 
   # returns a random integer between min and max
-  int: (min, max) -> Math.floor(@next() * (max - min) + min)
+  int: (min, max) -> Math.floor(@random() * (max - min) + min)
+
+  float: (min, max) -> @random() * (max - min) + min
 
   # returns a random boolean true/ false
-  bool: (chance=0.5) -> @next() < chance
+  bool: (chance=0.5) -> @random() < chance
 
 
   # ~~~ Lists ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   # sorts the given list in random order
-  shuffle: (list) -> list.sort -> 0.5 - @next()
+  shuffle: (list) -> list.sort -> 0.5 - @random()
 
   # picks one or several random elements from a list
   pick: (list, count=1) ->
@@ -66,5 +68,4 @@ class Random
     @pick list
 
 
-module.exports =
-  Random: Random
+module.exports.Random = Random
