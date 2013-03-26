@@ -23,6 +23,11 @@
         {
             "title": "05 Force Directed Graph",
             "url": "05-force-directed-graph.coffee"
+        },
+
+        {
+            "title": "06 Noise Generators",
+            "url": "06-noise.coffee"
         }
     ]
 }
