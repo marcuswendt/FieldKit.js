@@ -10,40 +10,45 @@ $(document).ready ->
   loadExample = (title, url) ->
     console.log "loading example '#{title}' (#{url})"
 
-    # stop previous sketch
-    if window.currentExample
-      window.currentExample.stop()
-
-    # update page
-    $("#title").text "#{pageTitle}: #{title}"
-    $("#container").html "<p><i>loading...</i></p>"
-
-    $("#code").hide()
-#    $("#code").text ""
-
-    # load script
-    $.get url, (data) ->
-
+    initExample = ->
       # update page
-      $("#container").html ""
+      $("#title").text "#{pageTitle}: #{title}"
+      $("#container").html "<p><i>loading...</i></p>"
 
-      currentEditor = CodeMirror document.getElementById("code"), {
+      $("#code").hide()
+      #    $("#code").text ""
+
+      # load script
+      $.get url, (data) ->
+
+        # update page
+        $("#container").empty()
+
+        currentEditor = CodeMirror document.getElementById("code"), {
         value: data
         mode: "coffeescript"
         theme: "eclipse"
         runable: true
-      }
+        }
 
-      # compile CoffeeScript to JavaScript
-      source = data + "\n" + "window.currentExample = new Example()"
-      js = CoffeeScript.compile source
+        # compile CoffeeScript to JavaScript
+        source = data + "\n" + "window.currentExample = new Example()"
+        js = CoffeeScript.compile source
 
-      # execute script
-      $.globalEval js
+        # execute script
+        $.globalEval js
 
-      # update browser history
-      slug = url.replace ".coffee", ""
-      window.history.pushState { title: title, url: url }, title, "##{slug}"
+        # update browser history
+        slug = url.replace ".coffee", ""
+        window.history.pushState { title: title, url: url }, title, "##{slug}"
+
+    # stop previous sketch
+    if window.currentExample?
+      window.currentExample.stop initExample
+
+    else
+      initExample()
+
 
   #
   # Events

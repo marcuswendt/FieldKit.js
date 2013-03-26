@@ -46,19 +46,26 @@ class Sketch
     domObject.onmouseup = (e) => @mouseUp()
 
   isRunning: false
+  isFinishedCallback: null
 
   start: ->
     @isRunning = true
+    requestId = null
 
     # set up draw loop
     render = =>
       @draw()
       if(@isRunning)
-        window.requestAnimationFrame render
+        requestId = window.requestAnimationFrame render
+      else
+        window.cancelAnimationFrame requestId
+        @isFinishedCallback() if @isFinishedCallback?
 
-    window.requestAnimationFrame render
+    requestId = window.requestAnimationFrame render
 
-  stop: -> @isRunning = false
+  stop: (callback) ->
+    @isRunning = false
+    @isFinishedCallback = callback
 
   toString: -> "Sketch"
 
