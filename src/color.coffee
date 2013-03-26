@@ -29,6 +29,12 @@ class Color
     return false if not other?
     @r == other.r and @g == other.g and @b == other.b and @a == other.a
 
+  toCSS: ->
+    r = Math.floor 255 * @r
+    g = Math.floor 255 * @g
+    b = Math.floor 255 * @b
+    "rgba(#{r},#{g},#{b},#{@a})"
+
   toString: ->
     "fk.Color(#{@r},#{@g},#{@b},#{@a})"
 
