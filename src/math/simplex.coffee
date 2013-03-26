@@ -1,3 +1,4 @@
+#
 # Ported from Stefan Gustavson's java implementation
 # http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf
 # Read Stefan's excellent paper for details on how this code works.
@@ -7,42 +8,34 @@
 # Added 4D noise
 # Joshua Koo zz85nus@gmail.com
 
-###
-You can pass in a random number generator object if you like.
-It is assumed to have a random() method.
-###
 class SimplexNoise
+  constructor: (random) ->
+    random = Math if not random?
 
-  constructor: (@r) ->
-    @r = Math  if @r is `undefined`
     @grad3 = [[1, 1, 0], [-1, 1, 0], [1, -1, 0], [-1, -1, 0], [1, 0, 1], [-1, 0, 1], [1, 0, -1], [-1, 0, -1], [0, 1, 1], [0, -1, 1], [0, 1, -1], [0, -1, -1]]
     @grad4 = [[0, 1, 1, 1], [0, 1, 1, -1], [0, 1, -1, 1], [0, 1, -1, -1], [0, -1, 1, 1], [0, -1, 1, -1], [0, -1, -1, 1], [0, -1, -1, -1], [1, 0, 1, 1], [1, 0, 1, -1], [1, 0, -1, 1], [1, 0, -1, -1], [-1, 0, 1, 1], [-1, 0, 1, -1], [-1, 0, -1, 1], [-1, 0, -1, -1], [1, 1, 0, 1], [1, 1, 0, -1], [1, -1, 0, 1], [1, -1, 0, -1], [-1, 1, 0, 1], [-1, 1, 0, -1], [-1, -1, 0, 1], [-1, -1, 0, -1], [1, 1, 1, 0], [1, 1, -1, 0], [1, -1, 1, 0], [1, -1, -1, 0], [-1, 1, 1, 0], [-1, 1, -1, 0], [-1, -1, 1, 0], [-1, -1, -1, 0]]
     @p = []
     i = 0
 
-    while i < 256
-      @p[i] = Math.floor(r.random() * 256)
-      i++
+    for i in [0..256]
+      @p[i] = Math.floor(random.random() * 256)
 
     # To remove the need for index wrapping, double the permutation table length
     @perm = []
-    i = 0
-
-    while i < 512
+    for i in [0..512]
       @perm[i] = @p[i & 255]
-      i++
 
     # A lookup table to traverse the simplex around a given point in 4D.
     # Details can be found where this table is used, in the 4D noise method.
     @simplex = [[0, 1, 2, 3], [0, 1, 3, 2], [0, 0, 0, 0], [0, 2, 3, 1], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [1, 2, 3, 0], [0, 2, 1, 3], [0, 0, 0, 0], [0, 3, 1, 2], [0, 3, 2, 1], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [1, 3, 2, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [1, 2, 0, 3], [0, 0, 0, 0], [1, 3, 0, 2], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [2, 3, 0, 1], [2, 3, 1, 0], [1, 0, 2, 3], [1, 0, 3, 2], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [2, 0, 3, 1], [0, 0, 0, 0], [2, 1, 3, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [2, 0, 1, 3], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [3, 0, 1, 2], [3, 0, 2, 1], [0, 0, 0, 0], [3, 1, 2, 0], [2, 1, 0, 3], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [3, 1, 0, 2], [0, 0, 0, 0], [3, 2, 0, 1], [3, 2, 1, 0]]
 
-  dot: (g, x, y) ->
-    g[0] * x + g[1] * y
+  dot = (g, x, y) -> g[0] * x + g[1] * y
 
   noise2: (xin, yin) ->
     n0 = undefined # Noise contributions from the three corners
     n1 = undefined
     n2 = undefined
+
     # Skew the input space to determine which simplex cell we're in
     F2 = 0.5 * (Math.sqrt(3.0) - 1.0)
     s = (xin + yin) * F2 # Hairy factor for 2D
@@ -84,15 +77,17 @@ class SimplexNoise
     t0 = 0.5 - x0 * x0 - y0 * y0
     unless t0 < 0
       t0 *= t0
-      n0 = t0 * t0 * @dot(@grad3[gi0], x0, y0) # (x,y) of grad3 used for 2D gradient
+      n0 = t0 * t0 * dot(@grad3[gi0], x0, y0) # (x,y) of grad3 used for 2D gradient
     t1 = 0.5 - x1 * x1 - y1 * y1
     unless t1 < 0
       t1 *= t1
-      n1 = t1 * t1 * @dot(@grad3[gi1], x1, y1)
+      n1 = t1 * t1 * dot(@grad3[gi1], x1, y1)
     t2 = 0.5 - x2 * x2 - y2 * y2
     unless t2 < 0
       t2 *= t2
-      n2 = t2 * t2 * @dot(@grad3[gi2], x2, y2)
+      n2 = t2 * t2 * dot(@grad3[gi2], x2, y2)
+
+#    console.log "#{xin}, #{yin} = n0 #{n0} n1 #{n1} n2 #{n2}"
 
     # Add contributions from each corner to get the final noise value.
     # The result is scaled to return values in the interval [-1,1].
@@ -200,19 +195,19 @@ class SimplexNoise
     t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0
     unless t0 < 0
       t0 *= t0
-      n0 = t0 * t0 * @dot(@grad3[gi0], x0, y0, z0)
+      n0 = t0 * t0 * dot(@grad3[gi0], x0, y0, z0)
     t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1
     unless t1 < 0
       t1 *= t1
-      n1 = t1 * t1 * @dot(@grad3[gi1], x1, y1, z1)
+      n1 = t1 * t1 * dot(@grad3[gi1], x1, y1, z1)
     t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2
     unless t2 < 0
       t2 *= t2
-      n2 = t2 * t2 * @dot(@grad3[gi2], x2, y2, z2)
+      n2 = t2 * t2 * dot(@grad3[gi2], x2, y2, z2)
     t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3
     unless t3 < 0
       t3 *= t3
-      n3 = t3 * t3 * @dot(@grad3[gi3], x3, y3, z3)
+      n3 = t3 * t3 * dot(@grad3[gi3], x3, y3, z3)
 
     # Add contributions from each corner to get the final noise value.
     # The result is scaled to stay just inside [-1,1]
@@ -333,25 +328,26 @@ class SimplexNoise
     t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0 - w0 * w0
     unless t0 < 0
       t0 *= t0
-      n0 = t0 * t0 * @dot(grad4[gi0], x0, y0, z0, w0)
+      n0 = t0 * t0 * dot(grad4[gi0], x0, y0, z0, w0)
     t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1 - w1 * w1
     unless t1 < 0
       t1 *= t1
-      n1 = t1 * t1 * @dot(grad4[gi1], x1, y1, z1, w1)
+      n1 = t1 * t1 * dot(grad4[gi1], x1, y1, z1, w1)
     t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2 - w2 * w2
     unless t2 < 0
       t2 *= t2
-      n2 = t2 * t2 * @dot(grad4[gi2], x2, y2, z2, w2)
+      n2 = t2 * t2 * dot(grad4[gi2], x2, y2, z2, w2)
     t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3 - w3 * w3
     unless t3 < 0
       t3 *= t3
-      n3 = t3 * t3 * @dot(grad4[gi3], x3, y3, z3, w3)
+      n3 = t3 * t3 * dot(grad4[gi3], x3, y3, z3, w3)
     t4 = 0.6 - x4 * x4 - y4 * y4 - z4 * z4 - w4 * w4
     unless t4 < 0
       t4 *= t4
-      n4 = t4 * t4 * @dot(grad4[gi4], x4, y4, z4, w4)
+      n4 = t4 * t4 * dot(grad4[gi4], x4, y4, z4, w4)
 
     # Sum up and scale the result to cover the range [-1,1]
     27.0 * (n0 + n1 + n2 + n3 + n4)
+
 
 module.exports.SimplexNoise = SimplexNoise
