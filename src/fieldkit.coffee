@@ -31,9 +31,12 @@ fk = {}
 extend require './color'
 extend require './time'
 
-# Math
+# Math: Core
 extend 'math', require './math/math'
 extend 'math', require './math/random'
+extend 'math', require './math/noise'
+
+# Math: Geometry
 extend 'math', require './math/vector'
 extend 'math', require './math/rect'
 

@@ -39,7 +39,7 @@ class SimplexNoise
   dot: (g, x, y) ->
     g[0] * x + g[1] * y
 
-  noise: (xin, yin) ->
+  noise2: (xin, yin) ->
     n0 = undefined # Noise contributions from the three corners
     n1 = undefined
     n2 = undefined
@@ -100,7 +100,7 @@ class SimplexNoise
 
 
   # 3D simplex noise
-  noise3d: (xin, yin, zin) ->
+  noise3: (xin, yin, zin) ->
     n0 = undefined # Noise contributions from the four corners
     n1 = undefined
     n2 = undefined
@@ -220,7 +220,7 @@ class SimplexNoise
 
 
   # 4D simplex noise
-  noise4d: (x, y, z, w) ->
+  noise4: (x, y, z, w) ->
 
     # For faster and easier lookups
     grad4 = @grad4
@@ -353,3 +353,5 @@ class SimplexNoise
 
     # Sum up and scale the result to cover the range [-1,1]
     27.0 * (n0 + n1 + n2 + n3 + n4)
+
+module.exports.SimplexNoise = SimplexNoise
