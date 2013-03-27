@@ -10,6 +10,7 @@ Vec2 = require('../math/vector').Vec2
 class Sketch
   width: -1
   height: -1
+  canvasId: "sketch"
   domObjectId: "container"
 
   # drawing
@@ -28,6 +29,7 @@ class Sketch
 
     # create 2D canvas
     canvas = document.createElement("canvas")
+    canvas.id = @canvasId
     canvas.width = @width
     canvas.height = @height
     domObject.appendChild canvas

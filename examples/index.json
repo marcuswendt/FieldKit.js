@@ -26,8 +26,8 @@
         },
 
         {
-            "title": "06 Noise Generators",
-            "url": "06-noise.coffee"
+            "title": "06 Particle Noise Trails",
+            "url": "06-trails.coffee"
         }
     ]
 }
