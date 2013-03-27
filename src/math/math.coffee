@@ -3,9 +3,14 @@ randomPkg = require './random'
 random = new randomPkg.Random()
 
 module.exports =
+
+  # scales the given value from a given incoming range onto the given output range
+  fit: (value, inMin, inMax, outMin, outMax) -> ((value - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin
+
   # fits the given value between min and max
   fit01: (value, min, max) -> value * (max - min) + min
 
+  # makes sure the given value doesnt exceed min or max
   clamp: (value, min, max) -> Math.max(min, Math.min(max, value))
   clamp01: (value) -> Math.max(0, Math.min(1, value))
 
@@ -15,7 +20,7 @@ module.exports =
 
 
   ###
-    Easing Functions - inspired by http://easings.net/
+    Easing Functions - inspired by http://easings.net
     only considering the t value for the range [0, 1] => [0, 1]
   ###
   ease:
