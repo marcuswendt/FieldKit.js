@@ -174,6 +174,17 @@ class Sketch
     @g.stroke()
     @g.closePath()
 
+  polygon: (points) ->
+    @g.beginPath()
+    @g.moveTo points[0].x, points[0].y
+
+    for p in points[1..]
+      @g.lineTo p.x, p.y
+
+    @g.fill() if isFillEnabled
+    @g.stroke() if isStrokeEnabled
+    @g.closePath()
+
   createImage: (width, height) ->
     imageData = @g.createImageData(width, height)
 
