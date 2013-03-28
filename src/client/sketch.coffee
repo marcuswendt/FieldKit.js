@@ -10,6 +10,7 @@ Vec2 = require('../math/vector').Vec2
 class Sketch
   width: -1
   height: -1
+  canvasId: "sketch"
   domObjectId: "container"
 
   # drawing
@@ -28,6 +29,7 @@ class Sketch
 
     # create 2D canvas
     canvas = document.createElement("canvas")
+    canvas.id = @canvasId
     canvas.width = @width
     canvas.height = @height
     domObject.appendChild canvas
@@ -172,6 +174,17 @@ class Sketch
       @g.lineTo x2, y2
 
     @g.stroke()
+    @g.closePath()
+
+  polygon: (points) ->
+    @g.beginPath()
+    @g.moveTo points[0].x, points[0].y
+
+    for p in points[1..]
+      @g.lineTo p.x, p.y
+
+    @g.fill() if isFillEnabled
+    @g.stroke() if isStrokeEnabled
     @g.closePath()
 
   createImage: (width, height) ->

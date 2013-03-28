@@ -20,7 +20,7 @@ class Random
     "Random(#{@seedValue})"
 
 
-  # ~~~ Numbers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # returns a random float value between [0..1]
   random: ->
     k = 1000000
     mersenne.rand(k) / k

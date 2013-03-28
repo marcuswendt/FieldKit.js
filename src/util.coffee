@@ -28,4 +28,17 @@ util.removeElement = (element, list) ->
   list
 
 
+# shuffles the order of the given object or array
+# optionally takes a random number generator object
+# returns the shuffled object
+util.shuffle = (object, rng) ->
+  rng = Math unless rng?
+  i = object.length
+  while i
+    j = parseInt(rng.random() * i)
+    x = object[--i]
+    object[i] = object[j]
+    object[j] = x
+  object
+
 module.exports = util

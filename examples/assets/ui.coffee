@@ -63,6 +63,13 @@ $(document).ready ->
     state = e.originalEvent.state
     loadExample state.title, state.url if state?
 
+  $('#image').hide()
+
+  $('#saveImage').click ->
+    canvas = document.getElementById("sketch")
+    document.getElementById("image").src = canvas.toDataURL()
+    Canvas2Image.saveAsPNG(canvas)
+
 
   #
   # Menu
