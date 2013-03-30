@@ -8,7 +8,7 @@ class Example extends fk.client.Sketch
   setup: ->
     rng = new fk.math.Random()
     noise = new fk.math.SimplexNoise(rng)
-    density = fk.math.randI(20, 50)
+    density = fk.math.randi 20, 50
     @trails = @renderVelocityTrails density, noise, 200
     console.log "trails: #{@trails.length} points: #{@trails[0].points.length}"
 
@@ -33,7 +33,7 @@ class Example extends fk.client.Sketch
       points: []
 
       initTrail: ->
-        @color = fk.math.randF(0.1, 1)
+        @color = fk.math.randf(0.1, 1)
         @points = []
 
       updateTrail: ->

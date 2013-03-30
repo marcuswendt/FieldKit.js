@@ -26,7 +26,7 @@ class Example extends fk.client.Sketch
       particle.setPosition2 @width / 2, ((Math.random() * 2 - 1) * 0.25 + 0.5) * @height
       particle.force.set2 (Math.random() * 2 - 1) * 10.1, 0
 
-      particle.lifetime = rng.int 60, 120
+      particle.lifetime = rng.randi 60, 120
       particle.size = 5
 
     #      particle.setPosition2 Math.random() * @width, Math.random() * @height

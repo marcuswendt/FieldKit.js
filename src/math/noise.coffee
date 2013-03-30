@@ -363,5 +363,28 @@ class SimplexNoise extends Noise
     27.0 * (n0 + n1 + n2 + n3 + n4)
 
 
+class FlowNoise extends Noise
+  n = 128
+  TWO_PI = Math.PI * 2
+
+  basis: []
+  perm: []
+
+  constructor: (rng) ->
+    rng = Math unless rng?
+
+    for i in [0..n]
+      theta = i * TWO_PI / n
+      @basis[i] = [ Math.cos theta, Math.sin theta ]
+      @perm[i] = i
+
+    reinitialize (rng.random() * 1000) | 0
+
+  reinitialize: (seed) ->
+    for i in [1..n]
+      j = (Math.random() * seed) % (i+1)
+      seed += 1
+
+
 module.exports =
   SimplexNoise: SimplexNoise
