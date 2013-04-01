@@ -41,4 +41,42 @@ util.shuffle = (object, rng) ->
     object[j] = x
   object
 
+
+
+###
+
+  JavaScript getter and setter support for CoffeeScript classes
+  Ref: https://github.com/jashkenas/coffee-script/issues/1039
+
+  Note:
+  Classes using this wont work under IE6 + IE7
+
+  Usage:
+  class Vector3D extends EXObject
+    constructor: (@x, @y, @z) ->
+
+    @get 'x', -> @[0]
+    @get 'y', -> @[1]
+    @get 'z', -> @[2]
+
+    @set 'x', (x) -> @[0] = x
+    @set 'y', (y) -> @[1] = y
+    @set 'z', (z) -> @[2] = z
+
+###
+util.EXObject = class EXObject
+
+  @get: (propertyName, func) ->
+    Object.defineProperty @::, propertyName,
+      configurable: true
+      enumerable: true
+      get: func
+
+  @set: (propertyName, func) ->
+    Object.defineProperty @::, propertyName,
+      configurable: true
+      enumerable: true
+      set: func
+
+
 module.exports = util
