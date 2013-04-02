@@ -1,5 +1,5 @@
 util = require './util'
-
+math = require './math/math'
 
 ###
   Timer: keeps track of time, measures intervals etc.
@@ -155,6 +155,11 @@ class Time
   equals: (time) -> @value == if typeof(time) == 'number' then time else time.value
   toString: -> "Time(#{@value}ms)"
 
+  # Returns its position relative to the given Timespan.
+  normalizedTo: (span) -> math.fit(@value, span.from.value, span.to.value, 0, 1)
+
+  toFrame: (fps=60) -> Math.round(@value / (1000 / fps))
+
   # factory methods
   @s: (seconds) -> new Time seconds * 1000
   @ms: (milliseconds) -> new Time milliseconds
@@ -174,11 +179,11 @@ class Timespan extends util.EXObject
 
       when 1
         @from = new Time(0)
-        @to = new Time(argument[0])
+        @to = new Time(arguments[0])
 
       when 2
-        @from = new Time( arguments[0] )
-        @to = new Time( arguments[1] )
+        @from = new Time(arguments[0])
+        @to = new Time(arguments[1])
 
   # returns a list of Time events by stepping through this timespan along a given interval
   # interval can be another time object or millisecond value
