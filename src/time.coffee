@@ -1,6 +1,10 @@
+util = require './util'
+math = require './math/math'
 
-
-# keeps track of time, measures intervals etc.
+###
+  Timer: keeps track of time, measures intervals etc.
+  ------------------------------------------------------------------------------
+###
 class Timer
   now: null
   prev: null
@@ -19,7 +23,10 @@ class Timer
   reset: -> @now = @prev = Date.now()
 
 
-# keeps track of rhythm, converts between beats, bars, time, tempo etc
+###
+  Tempo: keeps track of rhythm, converts between beats, bars, time, tempo etc
+  ------------------------------------------------------------------------------
+###
 class Tempo
   bpm: 120
   sigNum: 4
@@ -117,6 +124,109 @@ class Tempo
     @beat
 
 
+###
+  Time: Represents a single moment in time
+  ------------------------------------------------------------------------------
+###
+class Time
+  value: 0 # time in milliseconds
+  constructor: (arg) ->
+    if typeof(arg) == 'number'
+      @value = arg
+    else
+      @value = arg.value
+
+  # adds the given time object or millisecond value
+  add: (time) -> @value += if typeof(time) == 'number' then time else time.value
+
+  # adds the given time object or millisecond value and returns the result as new object
+  add_: (time) -> new Time(@value + if typeof(time) == 'number' then time else time.value)
+
+  # subtrct the given time object or millisecond value
+  sub: (time) -> @time -= if typeof(time) == 'number' then time else time.value
+
+  # subtracts the given time object or millisecond value and returns the result as new object
+  sub_: (time) -> new Time(@value - if typeof(time) == 'number' then time else time.value)
+
+  scale: (factor) -> @value *= factor
+  scale_: (factor) -> new Time(@value * factor)
+
+  clone: -> new Time(@value)
+  equals: (time) -> @value == if typeof(time) == 'number' then time else time.value
+  toString: -> "Time(#{@value}ms)"
+
+  # Returns its position relative to the given Timespan.
+  normalizedTo: (span) -> math.fit(@value, span.from.value, span.to.value, 0, 1)
+
+  toFrame: (fps=60) -> Math.round(@value / (1000 / fps))
+
+  # factory methods
+  @s: (seconds) -> new Time seconds * 1000
+  @ms: (milliseconds) -> new Time milliseconds
+
+
+
+###
+  Timespan: Represents a duration of time between two moments
+  ------------------------------------------------------------------------------
+###
+class Timespan extends util.EXObject
+  constructor: ->
+    switch arguments.length
+      when 0
+        @from = new Time(0)
+        @to = new Time(0)
+
+      when 1
+        @from = new Time(0)
+        @to = new Time(arguments[0])
+
+      when 2
+        @from = new Time(arguments[0])
+        @to = new Time(arguments[1])
+
+  # returns a list of Time events by stepping through this timespan along a given interval
+  # interval can be another time object or millisecond value
+  segmentByInterval: (interval, snapEnd=false) ->
+    interval = if typeof interval == 'number' then new Time(interval) else interval
+
+    segments = []
+    current = new Timespan(@from, @from.add_(interval))
+    segments.push current.clone()
+
+    while current.to.value < @to.value
+      current.from.add interval
+      current.to.add interval
+      segments.push current.clone()
+
+    # creates another segment at the
+    if snapEnd and segments.length > 0
+      last = segments[ segments.length - 1 ]
+      halfInterval = interval.scale_ 0.5
+      if @to.value - last.to.value > halfInterval
+        segments.push new Timespan(last.clone(), @to.clone())
+      else
+        last.to.value = @to.value
+
+    segments
+
+  clone: -> new Timespan(@from, @to)
+  toString: -> "Timespan(#{@from} - #{@to})"
+
+  # sets the duration
+  @set 'length', (length) -> @to.value = @from.value + length
+  @get 'length', -> new Time(@to.value - @from.value)
+
+  # return this duration in seconds
+  @get 's', -> @length.s
+
+  # factory methods
+  @s: (seconds) -> new Timespan(seconds * 1000)
+
+
 module.exports =
   Timer: Timer
   Tempo: Tempo
+
+  Time: Time
+  Timespan: Timespan

@@ -26,12 +26,12 @@ class Random
     mersenne.rand(k) / k
 
   # returns a random integer between min and max
-  int: (min, max) -> Math.floor(@random() * (max - min) + min)
+  randi: (min, max) -> Math.floor(@random() * (max - min) + min)
 
-  float: (min, max) -> @random() * (max - min) + min
+  randf: (min, max) -> @random() * (max - min) + min
 
   # returns a random boolean true/ false
-  bool: (chance=0.5) -> @random() < chance
+  flipCoin: (chance=0.5) -> @random() < chance
 
 
   # ~~~ Lists ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,7 +47,7 @@ class Random
       else
       # return single entry
         if count == 1
-          list[ @int(0, list.length) ]
+          list[ @randi(0, list.length) ]
 
           # return multiple entries as list
         else

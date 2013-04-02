@@ -8,7 +8,7 @@ class Example extends fk.client.Sketch
   setup: ->
     rng = new fk.math.Random()
     noise = new fk.math.SimplexNoise(rng)
-    density = fk.math.randI(20, 50)
+    density = fk.math.randi 20, 50
     @trails = @renderVelocityTrails density, noise, 200
     console.log "trails: #{@trails.length} points: #{@trails[0].points.length}"
 
@@ -22,7 +22,6 @@ class Example extends fk.client.Sketch
 
     @noFill()
     for t in @trails
-      @lineWidth t.width
       @stroke t.color * 255 | 0
       @polygon t.points
 
@@ -31,12 +30,10 @@ class Example extends fk.client.Sketch
     # setup physics
     class Trail extends fk.physics.Particle2
       color: 1
-      width: 1
       points: []
 
       initTrail: ->
-        @color = fk.math.randF(0.1, 1)
-        @width = fk.math.randF(0.5, 2)
+        @color = fk.math.randf(0.1, 1)
         @points = []
 
       updateTrail: ->

@@ -61,7 +61,7 @@ class Example extends fk.client.Sketch
     center = particle = @physics.emitter.create()
     particle.setPosition2 x, y
 
-    nPoints = fk.math.randI 8, 64
+    nPoints = fk.math.randi 8, 64
     hull = []
     alpha = 0
     for i in [0..nPoints]
@@ -92,7 +92,7 @@ class Example extends fk.client.Sketch
 
     # create interior support springs
     for particle, i in hull
-      if fk.math.randF(0,1) > 0.25
+      if fk.math.randf(0,1) > 0.25
         spring = createLink particle, center, 0.5
         spring.color = new fk.Color(0,1,1)
 

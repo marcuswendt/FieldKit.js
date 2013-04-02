@@ -119,7 +119,7 @@ class Example extends fk.client.Sketch
     @graph = new Graph(springIterations)
 
     createNodes = (parent, depth=0) ->
-      numChildren = rng.int 0, (depth * 5)
+      numChildren = rng.randi 0, (depth * 5)
 
       for i in [0..numChildren]
         child = parent.addNode "c#{i}"

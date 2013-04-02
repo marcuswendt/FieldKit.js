@@ -87,7 +87,7 @@ class Sketch
   ###
   isFillEnabled = true
   isStrokeEnabled = false
-  TWOPI = Math.PI * 2
+  TWO_PI = Math.PI * 2
 
   computeStyle = (args) ->
     switch args.length
@@ -155,7 +155,7 @@ class Sketch
 
   circle: (x, y, r) ->
     @g.beginPath()
-    @g.arc x, y, r, 0, TWOPI, false
+    @g.arc x, y, r, 0, TWO_PI, false
     @g.fill() if isFillEnabled
     @g.stroke() if isStrokeEnabled
     @g.closePath()
