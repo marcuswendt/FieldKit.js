@@ -53,3 +53,17 @@ describe 'Timespan', ->
       ts = new fk.Timespan.str "1s + 1f .. 1s * 2", fps
       ts.from.value.should.equal 1000 + 1000 / fps
       ts.to.value.should.equal 2000
+
+  describe '#segmentByInterval()', ->
+    it 'should work with an even interval', ->
+      r = fk.Timespan.s(1).segmentByInterval fk.Time.ms(250)
+      r.length.should.equal 4
+
+    it 'should work with an uneven interval', ->
+      r = fk.Timespan.s(1).segmentByInterval fk.Time.ms(255)
+      r.length.should.equal 4
+
+    it 'should work with an uneven interval and snapping', ->
+      r = fk.Timespan.s(1).segmentByInterval fk.Time.ms(255), true
+      r.length.should.equal 4
+      r[3].to.value.should.equal 1000
