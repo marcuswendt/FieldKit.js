@@ -3,7 +3,7 @@ BIN = ./node_modules/.bin
 COFFEE = ${BIN}/coffee
 BROWSERIFY = ${BIN}/browserify
 UGLIFY = ${BIN}/uglifyjs
-
+MOCHA = ${BIN}/mocha
 
 # Targets
 default: dist
@@ -31,7 +31,9 @@ web: build
 docs:
 	# docco src/*.coffee
 
-test:
+# run unit tests using MOCHA
+test: build
+	${MOCHA} --compilers coffee:coffee-script test/*
 
 dist: deps web
 
