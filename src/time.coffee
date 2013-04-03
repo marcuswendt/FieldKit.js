@@ -174,7 +174,7 @@ class Time
 
     if tempo?
       units.push { symbol: 'i', factor: tempo.gridInterval }
-      units.push { symbol: 'bar', factor: tempo.gridInterval * grid.resolution }
+      units.push { symbol: 'bar', factor: tempo.gridInterval * tempo.resolution }
 
     # apply all unit conversions
     for unit in units
@@ -182,7 +182,7 @@ class Time
       string = string.replace re, (value) -> value * unit.factor
 
     # strip all alphabetical characters of string
-    string = string.replace /[A-Za-z$-]/g, ''
+    string = string.replace /[A-Za-z]/g, ''
 
     # evaluate arithmetic string
     eval(string)
@@ -269,8 +269,16 @@ class Timespan extends util.EXObject
   # return this duration in seconds
   @get 's', -> @length.s
 
-  # factory methods
+  # creates a new Timespan object with a duration of the given number of seconds
   @s: (seconds) -> new Timespan(seconds * 1000)
+
+  # creates a new Timespan object by parsing the given timespan arithmetic string i.e. 0..111
+  @str: (string, fps, tempo) ->
+    times = string.split '..'
+    throw "Invalid argument: #{string}" unless times.length == 2
+    from = Time.str times[0], fps, tempo
+    to = Time.str times[1], fps, tempo
+    new Timespan from, to
 
 
 module.exports =

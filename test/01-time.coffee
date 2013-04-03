@@ -16,12 +16,40 @@ describe 'Time', ->
 describe 'Timespan', ->
   describe '#overlaps()', ->
     it 'should detect overlaps', ->
-      t1 = new fk.Timespan(0, 100)
+      ts = new fk.Timespan(0, 100)
 
-      t1.overlaps(new fk.Timespan(-50, 50)).should.be.true
-      t1.overlaps(new fk.Timespan(50, 150)).should.be.true
-      t1.overlaps(new fk.Timespan(-50, 150)).should.be.true
+      ts.overlaps(new fk.Timespan(-50, 50)).should.be.true
+      ts.overlaps(new fk.Timespan(50, 150)).should.be.true
+      ts.overlaps(new fk.Timespan(-50, 150)).should.be.true
 
-      t1.overlaps(new fk.Timespan(-50, -1)).should.be.false
-      t1.overlaps(new fk.Timespan(120, 150)).should.be.false
+      ts.overlaps(new fk.Timespan(-50, -1)).should.be.false
+      ts.overlaps(new fk.Timespan(120, 150)).should.be.false
 
+  describe '#str()', ->
+    it 'should be able to parse simple timespan strings', ->
+      ts = fk.Timespan.str("0..1000ms")
+      ts.from.value.should.equal 0
+      ts.to.value.should.equal 1000
+
+    it 'should be able to parse complex timespan strings', ->
+      ts = fk.Timespan.str("1s * 4 / 2 .. 1s * 10")
+      ts.from.value.should.equal 2000
+      ts.to.value.should.equal 10000
+
+    it 'should resolve Time objects', ->
+      duration = fk.Time.s 2
+      ts = fk.Timespan.str "#{duration} - 1s .. #{duration}"
+      ts.from.value.should.equal 1000
+      ts.to.value.should.equal 2000
+
+    it 'should resolve seconds and frames', ->
+      fps = 30
+      ts = new fk.Timespan.str "1f .. 1s", fps
+      ts.from.value.should.equal 1000 / fps
+      ts.to.value.should.equal 1000
+
+    it 'should handle complex calculations of seconds and frames', ->
+      fps = 30
+      ts = new fk.Timespan.str "1s + 1f .. 1s * 2", fps
+      ts.from.value.should.equal 1000 + 1000 / fps
+      ts.to.value.should.equal 2000
