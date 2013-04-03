@@ -130,11 +130,16 @@ class Tempo
 ###
 class Time
   value: 0 # time in milliseconds
-  constructor: (arg) ->
-    if typeof(arg) == 'number'
-      @value = arg
-    else
-      @value = arg.value
+
+  # creates a new Time object from either
+  # - number of milliseconds
+  # - a time-arithmetic string (using the given fps and tempo)
+  # - another Time object's value
+  constructor: (arg=0, fps, tempo) ->
+    @value = switch typeof(arg)
+      when 'number' then arg
+      when 'string' then @eval(arg, fps, tempo)
+      else arg.value
 
   # adds the given time object or millisecond value
   add: (time) -> @value += if typeof(time) == 'number' then time else time.value
@@ -153,16 +158,49 @@ class Time
 
   clone: -> new Time(@value)
   equals: (time) -> @value == if typeof(time) == 'number' then time else time.value
-  toString: -> "Time(#{@value}ms)"
+  toString: -> "#{@value}ms"
 
   # Returns its position relative to the given Timespan.
   normalizedTo: (span) -> math.fit(@value, span.from.value, span.to.value, 0, 1)
 
   toFrame: (fps=60) -> Math.round(@value / (1000 / fps))
 
-  # factory methods
+  eval: (string, fps, tempo=null) ->
+    # init time unit conversions
+    units = [
+      { symbol: 's', factor: 1000 },
+      { symbol: 'f', factor: 1000 / fps }
+    ]
+
+    if tempo?
+      units.push { symbol: 'i', factor: tempo.gridInterval }
+      units.push { symbol: 'bar', factor: tempo.gridInterval * grid.resolution }
+
+    # apply all unit conversions
+    for unit in units
+      re = new RegExp "\\d+(?=#{unit.symbol})", "g"
+      string = string.replace re, (value) -> value * unit.factor
+
+    # strip all alphabetical characters of string
+    string = string.replace /[A-Za-z$-]/g, ''
+
+    # evaluate arithmetic string
+    eval(string)
+
+  # creates a new Time object from the given number of seconds
   @s: (seconds) -> new Time seconds * 1000
+
+  # creates a new Time object from the given number of milliseconds
   @ms: (milliseconds) -> new Time milliseconds
+
+  # creates a new Time object from the given number of frames at a certain framerate
+  @f: (frame, fps) -> new Time frame / (1000 / fps)
+
+  # creates a new Time object from the given number of Tempo grid intervals
+  @i: (intervals, tempo) -> new Time intervals * tempo.gridInterval
+
+  # creates a new Time object from the given time-arithmetic string
+  @str: (string, fps, tempo) -> new Time string, fps, tempo
 
 
 
@@ -209,6 +247,17 @@ class Timespan extends util.EXObject
         last.to.value = @to.value
 
     segments
+
+  # checks wether this timespan intersects with the given one
+  overlaps: (other) ->
+    from = @from.value
+    to = @to.value
+    from2 = other.from.value
+    to2 = other.to.value
+
+    (to2 >= from and to2 <= to) or
+    (from2 >= from and from2 <= to) or
+    (from2 <= from and to2 >= to)
 
   clone: -> new Timespan(@from, @to)
   toString: -> "Timespan(#{@from} - #{@to})"
