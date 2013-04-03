@@ -163,7 +163,7 @@ class Time
   # Returns its position relative to the given Timespan.
   normalizedTo: (span) -> math.fit(@value, span.from.value, span.to.value, 0, 1)
 
-  toFrame: (fps=60) -> Math.round(@value / (1000 / fps))
+  toFrame: (fps=60) -> Math.floor(@value / (1000 / fps))
 
   eval: (string, fps, tempo=null) ->
     # init time unit conversions
