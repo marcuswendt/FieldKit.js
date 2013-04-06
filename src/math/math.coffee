@@ -18,6 +18,13 @@ module.exports =
   randi: (min, max) -> random.randi(min, max)
   flipCoin: (chance) -> random.flipCoin(chance)
 
+  # rounds the given number to a certain number of decimals
+  round: (value, decimals=0) ->
+    if decimals == 0
+      Math.round(value)
+    else
+      exp = Math.pow(10, decimals);
+      Math.round(value * exp) / exp;
 
   ###
     Easing Functions - inspired by http://easings.net
