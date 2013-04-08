@@ -128,14 +128,17 @@ class Tempo
   Time: Represents a single moment in time
   ------------------------------------------------------------------------------
 ###
-class Time
+class Time extends util.EXObject
   value: 0 # time in milliseconds
 
   # creates a new Time object from either
   # - number of milliseconds
   # - a time-arithmetic string (using the given fps and tempo)
   # - another Time object's value
-  constructor: (arg=0, fps, tempo) ->
+  constructor: (arg, fps, tempo) ->
+    @set(arg, fps, tempo)
+
+  set: (arg=0, fps, tempo) ->
     @value = switch typeof(arg)
       when 'number' then arg
       when 'string' then @eval(arg, fps, tempo)
@@ -162,6 +165,9 @@ class Time
 
   # Returns its position relative to the given Timespan.
   normalizedTo: (span) -> math.fit(@value, span.from.value, span.to.value, 0, 1)
+
+  @set 's', (seconds) -> @value = seconds * 1000
+  @get 's', -> @value / 1000
 
   toFrame: (fps=60) -> Math.floor(@value / (1000 / fps))
 

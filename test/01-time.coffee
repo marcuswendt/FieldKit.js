@@ -12,6 +12,10 @@ describe 'Time', ->
     it 'should evaluate 1s + 1s = 2000', ->
       fk.Time.str("1s + 1s").value.should.equal 2000
 
+    it 'should return its value in seconds', ->
+      t = new fk.Time(10000)
+      t.s.should.equal 10
+
 
 describe 'Timespan', ->
   describe '#overlaps()', ->
