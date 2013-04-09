@@ -39,10 +39,11 @@ task 'examples', 'start static server for examples', ->
   fileServer = new(staticServer.Server)('./', { cache: 0 })
 
   server = require('http').createServer (request, response) ->
-    request.addListener 'end', ->
+    request.addListener('end', ->
         fileServer.serve request, response, (e, res) ->
           if request.url == '/'
             response.writeHead 302, { 'Location': 'examples/' }
             response.end()
+    ).resume()
 
   server.listen port
