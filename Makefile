@@ -9,7 +9,7 @@ MOCHA = ${BIN}/mocha
 default: dist
 
 deps: 
-	if test -d "node_modules"; then echo "dependencies installed"; else npm install; fi
+	if test -d "node_modules/coffee-script"; then echo "dependencies installed"; else npm install; fi
 	
 clean:
 	rm -rf lib/
