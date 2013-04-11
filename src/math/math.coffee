@@ -4,8 +4,10 @@ random = new randomPkg.Random()
 
 module.exports =
 
-  # scales the given value from a given incoming range onto the given output range
-  fit: (value, inMin, inMax, outMin, outMax) -> ((value - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin
+  # remaps the given value from a given incoming range onto the given output range
+  fit: (value, inMin, inMax, outMin, outMax) ->
+    value = Math.max(inMin, Math.min(inMax, value)) # clamp value before fitting
+    ((value - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin
 
   # fits the given value between min and max
   fit01: (value, min, max) -> value * (max - min) + min
