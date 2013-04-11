@@ -7,6 +7,7 @@
 ###
 
 mersenne = require 'mersenne'
+util = require '../util'
 
 class Random
   constructor: (initialSeed=0) ->
@@ -16,8 +17,7 @@ class Random
     @seedValue = value
     mersenne.seed @seedValue
 
-  toString: ->
-    "Random(#{@seedValue})"
+  toString: -> "Random(#{@seedValue})"
 
 
   # returns a random float value between [0..1]
@@ -45,7 +45,7 @@ class Random
       when 0 then null
       when 1 then list[0]
       else
-      # return single entry
+        # return single entry
         if count == 1
           list[ @randi(0, list.length) ]
 
@@ -55,7 +55,7 @@ class Random
           for i in [0...list.length]
             indices.push i
 
-          exports.shuffle(indices)
+          util.shuffle(indices)
           result = []
           for i in [0...count]
             result.push list[ indices[i] ]
