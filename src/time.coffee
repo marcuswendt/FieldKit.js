@@ -174,21 +174,27 @@ class Time extends util.EXObject
   eval: (string, fps, tempo=null) ->
     # init time unit conversions
     units = [
-      { symbol: 's', factor: 1000 },
-      { symbol: 'f', factor: 1000 / fps }
+      { symbol: 'ms', factor: 1 }, # minutes
+      { symbol: 's', factor: 1000 }, # seconds
+      { symbol: 'm', factor: 60000 }, # minutes
+#      { symbol: 'h', factor: 3600000 }, # hours
+      { symbol: 'f', factor: 1000 / fps } # frames
     ]
 
     if tempo?
-      units.push { symbol: 'i', factor: tempo.gridInterval }
-      units.push { symbol: 'bar', factor: tempo.gridInterval * tempo.resolution }
+      interval = tempo.gridInterval
+      units.push { symbol: 'i', factor: interval }
+      units.push { symbol: 'n', factor: interval * tempo.resolution }
 
     # apply all unit conversions
     for unit in units
+      # convert unit value to milliseconds
       re = new RegExp "\\d+(?=#{unit.symbol})", "g"
       string = string.replace re, (value) -> value * unit.factor
 
-    # strip all alphabetical characters of string
-    string = string.replace /[A-Za-z]/g, ''
+      # remove unit symbol
+      re = new RegExp unit.symbol, "g"
+      string = string.replace re, ''
 
     # evaluate arithmetic string
     eval(string)
