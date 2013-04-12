@@ -25,18 +25,76 @@ extend = (obj, source) ->
 
 ###
 
-Clones (copies) an Object using deep copying.
+  Swappable Mixins in CoffeeScript
 
-This function supports circular references by default, but if you are certain
-there are no circular references in your object, you can save some CPU time
-by calling clone(obj, false).
 
-Caution: if `circular` is false and `parent` contains circular references,
-your program may enter an infinite loop and crash.
+  Many thanks to Hashmal, who wrote this to start.
+  https://gist.github.com/803816/aceed8fc57188c3a19ce2eccdb25acb64f2be94e
 
-@param `parent` - the object to be cloned
-@param `circular` - set to true if the object to be cloned may contain
-circular references. (optional - true by default)
+  Usage
+  -----
+
+  class Derp extends Mixin
+    setup: ->
+      @googly = "eyes"
+
+  derp: ->
+    alert "Herp derp! What's with your #{ @googly }?"
+
+  class Herp
+    constructor: ->
+      Derp::augment this
+
+  herp = new Herp
+  herp.derp()
+
+  Mixin
+  -----
+
+  Classes inheriting `Mixin` will become removable mixins, enabling you to
+  swap them around.
+
+  Limitations
+  -----------
+
+  * When a class is augmented, all instances of that class are augmented too,
+    and when a mixin is ejected from a class, all instances lose that mixin too.
+  * You can't eject a mixin from an object if that mixin was added to the object's class. Eject the mixin from the class instead.
+
+###
+class Mixin
+
+  # "Class method". Augment object or class `t` with new methods.
+  augment: (t) ->
+    (t[n] = m unless n == 'augment' or !this[n].prototype?) for n, m of this
+    t.setup()
+
+  # When an object is augmented with at least one mixin, call this method to
+  # remove `mixin`.
+  eject: (mixin) ->
+    (delete this[n] if m in (p for o, p of mixin::)) for n, m of this
+
+  # Implement in your mixin to act as a constructor for mixed-in properties
+  setup: ->
+
+
+
+
+###
+
+  Clones (copies) an Object using deep copying.
+
+
+  This function supports circular references by default, but if you are certain
+  there are no circular references in your object, you can save some CPU time
+  by calling clone(obj, false).
+
+  Caution: if `circular` is false and `parent` contains circular references,
+  your program may enter an infinite loop and crash.
+
+  @param `parent` - the object to be cloned
+  @param `circular` - set to true if the object to be cloned may contain
+  circular references. (optional - true by default)
 
 ###
 clone = (parent, circular) ->
@@ -196,7 +254,9 @@ shuffle = (object, rng) ->
 module.exports =
   extend: extend
   clone: clone
+
   EXObject: EXObject
+  Mixin: Mixin
 
   removeElement: removeElement
   shuffle: shuffle
