@@ -23,3 +23,19 @@ describe 'Math', ->
       value = 33
       result = fk.math.fit value, 0, 0.25, 0, 1
       result.should.equal 1
+
+
+  describe '#round()', ->
+    it 'should work', ->
+      result = fk.math.round 0.123456789, 1
+      result.toString().should.equal "0.1"
+
+      result = fk.math.round 0.123456789, 3
+      result.toString().should.equal "0.123"
+
+      result = fk.math.round 0.1234, 4
+      result.toString().should.equal "0.1234"
+
+      # fails V8s number precision
+#      result = fk.math.round 0.1234, 5
+#      result.toString().should.equal "0.12345"
