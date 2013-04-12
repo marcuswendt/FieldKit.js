@@ -15,6 +15,13 @@ class Color
     @r = color.r
     @g = color.g
     @b = color.b
+    @a = color.a
+    this
+
+  set3: (r, g, b) ->
+    @r = r
+    @g = g
+    @b = b
     this
 
   randomize: ->
