@@ -49,7 +49,7 @@ class Random
         if count == 1
           list[ @randi(0, list.length) ]
 
-          # return multiple entries as list
+        # return multiple entries as list
         else
           indices = []
           for i in [0...list.length]

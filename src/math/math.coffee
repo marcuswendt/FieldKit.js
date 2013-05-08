@@ -28,6 +28,12 @@ module.exports =
       exp = Math.pow(10, decimals);
       Math.round(value * exp) / exp;
 
+  interpolate:
+    #! see http://en.wikipedia.org/wiki/Slerp
+    spherical: (current, target, delta) -> current * (1.0 - delta) + target * delta
+
+    linear: (current, target, delta) -> current + (target - current) * delta
+
   ###
     Easing Functions - inspired by http://easings.net
     only considering the t value for the range [0, 1] => [0, 1]
