@@ -16,6 +16,8 @@ module.exports =
   clamp: (value, min, max) -> Math.max(min, Math.min(max, value))
   clamp01: (value) -> Math.max(0, Math.min(1, value))
 
+  random: random
+
   randf: (min, max) -> random.randf(min, max)
   randi: (min, max) -> random.randi(min, max)
   flipCoin: (chance) -> random.flipCoin(chance)
