@@ -9,27 +9,28 @@ Particle = particleModule.Particle
 
 ###
 class Physics
-  # List of all particles in the simulation
-  particles: []
-
-  # List of all spring constraints in the simulation
-  springs: []
-
-  # List of all behaviours
-  behaviours: []
-  constraints: []
-
-  # The particle emitter
-  emitter: null
-
-  # The spatial optimisation manager to use
-  space: null
-
-  # Settings
-  constraintIterations: 1
-  springIterations: 1
 
   constructor: ->
+    # List of all particles in the simulation
+    @particles = []
+
+    # List of all spring constraints in the simulation
+    @springs = []
+
+    # List of all behaviours
+    @behaviours = []
+    @constraints = []
+
+    # The particle emitter
+    @emitter = null
+
+    # The spatial optimisation manager to use
+    @space = null
+
+    # Settings
+    @constraintIterations = 1
+    @springIterations = 1
+
     @space = new Space()
     @emitter = new Emitter(this)
     @clear()
@@ -168,12 +169,6 @@ class Space
   Particle Emitter
 ###
 class Emitter
-  rate: 1
-  interval: 1
-  max: 100
-
-  # @override to create your own particle type
-  type: particleModule.Particle3
 
   # local vars
   timer = -1
@@ -181,6 +176,12 @@ class Emitter
 
   # created with a reference to the original physics particle array
   constructor: (@physics) ->
+    @rate = 1
+    @interval = 1
+    @max = 100
+
+    # @override to create your own particle type
+    @type = particleModule.Particle3
 
   update: ->
     if timer is -1 or timer >= @interval
@@ -222,11 +223,6 @@ class Constraint extends Behaviour
   Verlet Spring
 ###
 class Spring
-  a: null # first particle
-  b: null # second particle
-  restLength: 0
-  strength: 0.5
-
   constructor: (@a, @b, @strength = 0.5) ->
     @restLength = @a.position.distance @b.position
 
