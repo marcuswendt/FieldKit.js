@@ -39,6 +39,7 @@ extend 'math', require './math/noise'
 # Math: Geometry
 extend 'math', require './math/vector'
 extend 'math', require './math/rect'
+extend 'math', require './math/box'
 
 # Utilities
 extend 'util', util
