@@ -160,6 +160,8 @@ class Collision extends Constraint
       undefined
     undefined
 
+  toString: -> "Collision(#{@searchRadius})"
+
 
 
 module.exports =

@@ -30,6 +30,9 @@ class Random
 
   randf: (min, max) -> @random() * (max - min) + min
 
+  # returns a random float between [-1..1]
+  randn: -> @random() * 2 -1
+
   # returns a random boolean true/ false
   flipCoin: (chance=0.5) -> @random() < chance
 
