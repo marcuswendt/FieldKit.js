@@ -40,6 +40,7 @@ extend 'math', require './math/noise'
 extend 'math', require './math/vector'
 extend 'math', require './math/rect'
 extend 'math', require './math/box'
+extend 'math', require './math/line'
 
 # Utilities
 extend 'util', util
