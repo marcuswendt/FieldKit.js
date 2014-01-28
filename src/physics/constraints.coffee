@@ -123,10 +123,9 @@ class Wrap3 extends Constraint
 ###
 class Collision extends Constraint
   physics: null
-  searchRadius: 100
 #  bouncyness: 1
 
-  constructor: (@physics) ->
+  constructor: (@physics, @searchRadius = 100) ->
 
   apply: (particle) ->
     position = particle.position

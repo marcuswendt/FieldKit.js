@@ -25,11 +25,6 @@ class Particle
   age: 0
   lifetime: -1
 
-  size: 1
-
-  # Spring
-  isLocked: false
-
   position: null
   drag: 0.03
 
@@ -40,7 +35,9 @@ class Particle
   force: null
   velocity: null
 
-  constructor: (id) -> @id = id
+  constructor: (@id) ->
+    @size = 1
+    @isLocked = false
 
   clearVelocity: -> @prev.set @position
   scaleVelocity: (amount) -> @prev.lerp @position, 1.0 - amount
